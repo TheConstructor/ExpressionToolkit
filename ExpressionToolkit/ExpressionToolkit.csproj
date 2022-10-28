@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <TransformOnBuild>true</TransformOnBuild>
+        <LangVersion>8</LangVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <T4Transform Include="ParameterBinder.tt">
+            <LastGenOutput>ParameterBinder.cs</LastGenOutput>
+        </T4Transform>
+        <Compile Update="ParameterBinder.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>ParameterBinder.tt</DependentUpon>
+        </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Mono.TextTemplating.Build" Version="2.3.0-preview-0048-g38de54eb32">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <!--<PackageReference Include="T4.BuildTools" Version="2.4.0-preview-0020-g384e6affbf">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>-->
+    </ItemGroup>
+
+</Project>

@@ -1,0 +1,124 @@
+﻿<#@ template language="C#" debug="false" hostspecific="false" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="System.Linq" #>
+using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+
+namespace ExpressionToolkit
+{
+    public static class ParameterBinder
+    {
+<#
+    for (var pCount = 1; pCount <= 16; pCount++)
+    {
+#>
+
+#region <#=pCount#> Parameter
+<#
+        for (var pBound = 1; pBound < pCount; pBound++)
+        {
+#>
+
+#region Binding first <#=pBound#> Parameters
+        public static Expression<Func<<#= string.Join(", ", Enumerable.Range(pBound + 1, pCount - pBound).Select(p => $"T{p}")) #>, TResult>> BindParameters<<#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"T{p}")) #>, TResult>(this Expression<Func<<#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"T{p}")) #>, TResult>> expression, <#= string.Join(", ", Enumerable.Range(1, pBound).Select(p => $"Expression p{p}")) #>)
+        {
+            return Expression.Lambda<Func<<#= string.Join(", ", Enumerable.Range(pBound + 1, pCount - pBound).Select(p => $"T{p}")) #>, TResult>>(
+                new ExpressionReplacingVisitor(
+                        new Dictionary<Expression, Expression>(<#= pBound #>)
+                        {
+                            <#= string.Join(",\n                            ", Enumerable.Range(1, pBound).Select(p => $"{{expression.Parameters[{p-1}], (p{p} as Expression<Func<T{p}>>)?.Body ?? p{p}}}")) #>
+                        })
+                    .Visit(expression.Body)!,
+                <#= string.Join(",\n                ", Enumerable.Range(pBound + 1, pCount - pBound).Select(p => $"expression.Parameters[{p-1}]")) #>);
+        }
+
+        public static Expression<Func<<#= string.Join(", ", Enumerable.Range(pBound + 1, pCount - pBound).Select(p => $"T{p}")) #>, TResult>> BindParameters<<#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"T{p}")) #>, TResult>(this Expression<Func<<#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"T{p}")) #>, TResult>> expression, <#= string.Join(", ", Enumerable.Range(1, pBound).Select(p => $"Expression<Func<T{p}>> p{p}")) #>)
+        {
+            return Expression.Lambda<Func<<#= string.Join(", ", Enumerable.Range(pBound + 1, pCount - pBound).Select(p => $"T{p}")) #>, TResult>>(
+                new ExpressionReplacingVisitor(
+                        new Dictionary<Expression, Expression>(<#= pBound #>)
+                        {
+                            <#= string.Join(",\n                            ", Enumerable.Range(1, pBound).Select(p => $"{{expression.Parameters[{p-1}], p{p}.Body}}")) #>
+                        })
+                    .Visit(expression.Body)!,
+                <#= string.Join(",\n                ", Enumerable.Range(pBound + 1, pCount - pBound).Select(p => $"expression.Parameters[{p-1}]")) #>);
+        }
+
+        public static Expression<Action<<#= string.Join(", ", Enumerable.Range(pBound + 1, pCount - pBound).Select(p => $"T{p}")) #>>> BindParameters<<#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"T{p}")) #>>(this Expression<Action<<#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"T{p}")) #>>> expression, <#= string.Join(", ", Enumerable.Range(1, pBound).Select(p => $"Expression p{p}")) #>)
+        {
+            return Expression.Lambda<Action<<#= string.Join(", ", Enumerable.Range(pBound + 1, pCount - pBound).Select(p => $"T{p}")) #>>>(
+                new ExpressionReplacingVisitor(
+                        new Dictionary<Expression, Expression>(<#= pBound #>)
+                        {
+                            <#= string.Join(",\n                            ", Enumerable.Range(1, pBound).Select(p => $"{{expression.Parameters[{p-1}], (p{p} as Expression<Func<T{p}>>)?.Body ?? p{p}}}")) #>
+                        })
+                    .Visit(expression.Body)!,
+                <#= string.Join(",\n                ", Enumerable.Range(pBound + 1, pCount - pBound).Select(p => $"expression.Parameters[{p-1}]")) #>);
+        }
+
+        public static Expression<Action<<#= string.Join(", ", Enumerable.Range(pBound + 1, pCount - pBound).Select(p => $"T{p}")) #>>> BindParameters<<#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"T{p}")) #>>(this Expression<Action<<#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"T{p}")) #>>> expression, <#= string.Join(", ", Enumerable.Range(1, pBound).Select(p => $"Expression<Func<T{p}>> p{p}")) #>)
+        {
+            return Expression.Lambda<Action<<#= string.Join(", ", Enumerable.Range(pBound + 1, pCount - pBound).Select(p => $"T{p}")) #>>>(
+                new ExpressionReplacingVisitor(
+                        new Dictionary<Expression, Expression>(<#= pBound #>)
+                        {
+                            <#= string.Join(",\n                            ", Enumerable.Range(1, pBound).Select(p => $"{{expression.Parameters[{p-1}], p{p}.Body}}")) #>
+                        })
+                    .Visit(expression.Body)!,
+                <#= string.Join(",\n                ", Enumerable.Range(pBound + 1, pCount - pBound).Select(p => $"expression.Parameters[{p-1}]")) #>);
+        }
+#endregion
+<#
+        }
+#>
+
+        public static Expression<Func<TResult>> BindParameters<<#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"T{p}")) #>, TResult>(this Expression<Func<<#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"T{p}")) #>, TResult>> expression, <#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"Expression p{p}")) #>)
+        {
+            return Expression.Lambda<Func<TResult>>(
+                new ExpressionReplacingVisitor(
+                        new Dictionary<Expression, Expression>(<#= pCount #>)
+                        {
+                            <#= string.Join(",\n                            ", Enumerable.Range(1, pCount).Select(p => $"{{expression.Parameters[{p-1}], (p{p} as Expression<Func<T{p}>>)?.Body ?? p{p}}}")) #>
+                        })
+                    .Visit(expression.Body)!);
+        }
+
+        public static Expression<Func<TResult>> BindParameters<<#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"T{p}")) #>, TResult>(this Expression<Func<<#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"T{p}")) #>, TResult>> expression, <#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"Expression<Func<T{p}>> p{p}")) #>)
+        {
+            return Expression.Lambda<Func<TResult>>(
+                new ExpressionReplacingVisitor(
+                        new Dictionary<Expression, Expression>(<#= pCount #>)
+                        {
+                            <#= string.Join(",\n                            ", Enumerable.Range(1, pCount).Select(p => $"{{expression.Parameters[{p-1}], p{p}.Body}}")) #>
+                        })
+                    .Visit(expression.Body)!);
+        }
+
+        public static Expression<Action> BindParameters<<#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"T{p}")) #>>(this Expression<Action<<#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"T{p}")) #>>> expression, <#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"Expression p{p}")) #>)
+        {
+            return Expression.Lambda<Action>(
+                new ExpressionReplacingVisitor(
+                        new Dictionary<Expression, Expression>(<#= pCount #>)
+                        {
+                            <#= string.Join(",\n                            ", Enumerable.Range(1, pCount).Select(p => $"{{expression.Parameters[{p-1}], (p{p} as Expression<Func<T{p}>>)?.Body ?? p{p}}}")) #>
+                        })
+                    .Visit(expression.Body)!);
+        }
+
+        public static Expression<Action> BindParameters<<#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"T{p}")) #>>(this Expression<Action<<#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"T{p}")) #>>> expression, <#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"Expression<Func<T{p}>> p{p}")) #>)
+        {
+            return Expression.Lambda<Action>(
+                new ExpressionReplacingVisitor(
+                        new Dictionary<Expression, Expression>(<#= pCount #>)
+                        {
+                            <#= string.Join(",\n                            ", Enumerable.Range(1, pCount).Select(p => $"{{expression.Parameters[{p-1}], p{p}.Body}}")) #>
+                        })
+                    .Visit(expression.Body)!);
+        }
+#endregion
+<#
+    }
+#>
+    }
+}

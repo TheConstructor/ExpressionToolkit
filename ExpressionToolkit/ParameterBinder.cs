@@ -37,72 +37,76 @@ namespace ExpressionToolkit
     public static class ParameterBinder1
     {
 
-        public static Expression<Func<TResult>> BindParameters<T1, TResult>(this Expression<Func<T1, TResult>> expression, Expression p1)
+        public static Expression BindParametersAndReturnBody<T1, TResult>(this Expression<Func<T1, TResult>> expression,
+            Expression p1)
         {
-            return Expression.Lambda<Func<TResult>>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(1)
-                        {
-                            {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(1)
+                    {
+                        {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression<Func<TResult>> BindParameters<T1, TResult>(this Expression<Func<T1, TResult>> expression, Expression<Func<T1>> p1)
+        public static Expression BindParametersAndReturnBody<T1, TResult>(this Expression<Func<T1, TResult>> expression,
+            Expression<Func<T1>> p1)
         {
-            return Expression.Lambda<Func<TResult>>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(1)
-                        {
-                            {expression.Parameters[0], p1.Body}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(1)
+                    {
+                        {expression.Parameters[0], p1.Body}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression<Action> BindParameters<T1>(this Expression<Action<T1>> expression, Expression p1)
+        public static Expression BindParametersAndReturnBody<T1>(this Expression<Action<T1>> expression,
+            Expression p1)
         {
-            return Expression.Lambda<Action>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(1)
-                        {
-                            {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(1)
+                    {
+                        {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression<Action> BindParameters<T1>(this Expression<Action<T1>> expression, Expression<Func<T1>> p1)
+        public static Expression BindParametersAndReturnBody<T1>(this Expression<Action<T1>> expression,
+            Expression<Func<T1>> p1)
         {
-            return Expression.Lambda<Action>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(1)
-                        {
-                            {expression.Parameters[0], p1.Body}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(1)
+                    {
+                        {expression.Parameters[0], p1.Body}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression BindParametersAndReturnBody<T1, TResult>(this Expression<Func<T1, TResult>> expression, Expression p1)
+        public static Expression<Func<TResult>> BindParameters<T1, TResult>(this Expression<Func<T1, TResult>> expression,
+            Expression p1)
         {
-            var boundExpression = ParameterBinder1.BindParameters(expression, p1);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder1.BindParametersAndReturnBody(expression, p1);
+            return Expression.Lambda<Func<TResult>>(boundExpression);
         }
 
-        public static Expression BindParametersAndReturnBody<T1, TResult>(this Expression<Func<T1, TResult>> expression, Expression<Func<T1>> p1)
+        public static Expression<Func<TResult>> BindParameters<T1, TResult>(this Expression<Func<T1, TResult>> expression,
+            Expression<Func<T1>> p1)
         {
-            var boundExpression = ParameterBinder1.BindParameters(expression, p1);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder1.BindParametersAndReturnBody(expression, p1);
+            return Expression.Lambda<Func<TResult>>(boundExpression);
         }
 
-        public static Expression BindParametersAndReturnBody<T1>(this Expression<Action<T1>> expression, Expression p1)
+        public static Expression<Action> BindParameters<T1>(this Expression<Action<T1>> expression,
+            Expression p1)
         {
-            var boundExpression = ParameterBinder1.BindParameters(expression, p1);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder1.BindParametersAndReturnBody(expression, p1);
+            return Expression.Lambda<Action>(boundExpression);
         }
 
-        public static Expression BindParametersAndReturnBody<T1>(this Expression<Action<T1>> expression, Expression<Func<T1>> p1)
+        public static Expression<Action> BindParameters<T1>(this Expression<Action<T1>> expression,
+            Expression<Func<T1>> p1)
         {
-            var boundExpression = ParameterBinder1.BindParameters(expression, p1);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder1.BindParametersAndReturnBody(expression, p1);
+            return Expression.Lambda<Action>(boundExpression);
         }
     }
 #endregion
@@ -161,76 +165,80 @@ namespace ExpressionToolkit
         }
 #endregion
 
-        public static Expression<Func<TResult>> BindParameters<T1, T2, TResult>(this Expression<Func<T1, T2, TResult>> expression, Expression p1, Expression p2)
+        public static Expression BindParametersAndReturnBody<T1, T2, TResult>(this Expression<Func<T1, T2, TResult>> expression,
+            Expression p1, Expression p2)
         {
-            return Expression.Lambda<Func<TResult>>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(2)
-                        {
-                            {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
-                            {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(2)
+                    {
+                        {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
+                        {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression<Func<TResult>> BindParameters<T1, T2, TResult>(this Expression<Func<T1, T2, TResult>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2)
+        public static Expression BindParametersAndReturnBody<T1, T2, TResult>(this Expression<Func<T1, T2, TResult>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2)
         {
-            return Expression.Lambda<Func<TResult>>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(2)
-                        {
-                            {expression.Parameters[0], p1.Body},
-                            {expression.Parameters[1], p2.Body}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(2)
+                    {
+                        {expression.Parameters[0], p1.Body},
+                        {expression.Parameters[1], p2.Body}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression<Action> BindParameters<T1, T2>(this Expression<Action<T1, T2>> expression, Expression p1, Expression p2)
+        public static Expression BindParametersAndReturnBody<T1, T2>(this Expression<Action<T1, T2>> expression,
+            Expression p1, Expression p2)
         {
-            return Expression.Lambda<Action>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(2)
-                        {
-                            {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
-                            {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(2)
+                    {
+                        {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
+                        {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression<Action> BindParameters<T1, T2>(this Expression<Action<T1, T2>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2)
+        public static Expression BindParametersAndReturnBody<T1, T2>(this Expression<Action<T1, T2>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2)
         {
-            return Expression.Lambda<Action>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(2)
-                        {
-                            {expression.Parameters[0], p1.Body},
-                            {expression.Parameters[1], p2.Body}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(2)
+                    {
+                        {expression.Parameters[0], p1.Body},
+                        {expression.Parameters[1], p2.Body}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, TResult>(this Expression<Func<T1, T2, TResult>> expression, Expression p1, Expression p2)
+        public static Expression<Func<TResult>> BindParameters<T1, T2, TResult>(this Expression<Func<T1, T2, TResult>> expression,
+            Expression p1, Expression p2)
         {
-            var boundExpression = ParameterBinder2.BindParameters(expression, p1, p2);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder2.BindParametersAndReturnBody(expression, p1, p2);
+            return Expression.Lambda<Func<TResult>>(boundExpression);
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, TResult>(this Expression<Func<T1, T2, TResult>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2)
+        public static Expression<Func<TResult>> BindParameters<T1, T2, TResult>(this Expression<Func<T1, T2, TResult>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2)
         {
-            var boundExpression = ParameterBinder2.BindParameters(expression, p1, p2);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder2.BindParametersAndReturnBody(expression, p1, p2);
+            return Expression.Lambda<Func<TResult>>(boundExpression);
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2>(this Expression<Action<T1, T2>> expression, Expression p1, Expression p2)
+        public static Expression<Action> BindParameters<T1, T2>(this Expression<Action<T1, T2>> expression,
+            Expression p1, Expression p2)
         {
-            var boundExpression = ParameterBinder2.BindParameters(expression, p1, p2);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder2.BindParametersAndReturnBody(expression, p1, p2);
+            return Expression.Lambda<Action>(boundExpression);
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2>(this Expression<Action<T1, T2>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2)
+        public static Expression<Action> BindParameters<T1, T2>(this Expression<Action<T1, T2>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2)
         {
-            var boundExpression = ParameterBinder2.BindParameters(expression, p1, p2);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder2.BindParametersAndReturnBody(expression, p1, p2);
+            return Expression.Lambda<Action>(boundExpression);
         }
     }
 #endregion
@@ -347,80 +355,84 @@ namespace ExpressionToolkit
         }
 #endregion
 
-        public static Expression<Func<TResult>> BindParameters<T1, T2, T3, TResult>(this Expression<Func<T1, T2, T3, TResult>> expression, Expression p1, Expression p2, Expression p3)
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, TResult>(this Expression<Func<T1, T2, T3, TResult>> expression,
+            Expression p1, Expression p2, Expression p3)
         {
-            return Expression.Lambda<Func<TResult>>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(3)
-                        {
-                            {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
-                            {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2},
-                            {expression.Parameters[2], (p3 as Expression<Func<T3>>)?.Body ?? p3}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(3)
+                    {
+                        {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
+                        {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2},
+                        {expression.Parameters[2], (p3 as Expression<Func<T3>>)?.Body ?? p3}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression<Func<TResult>> BindParameters<T1, T2, T3, TResult>(this Expression<Func<T1, T2, T3, TResult>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3)
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, TResult>(this Expression<Func<T1, T2, T3, TResult>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3)
         {
-            return Expression.Lambda<Func<TResult>>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(3)
-                        {
-                            {expression.Parameters[0], p1.Body},
-                            {expression.Parameters[1], p2.Body},
-                            {expression.Parameters[2], p3.Body}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(3)
+                    {
+                        {expression.Parameters[0], p1.Body},
+                        {expression.Parameters[1], p2.Body},
+                        {expression.Parameters[2], p3.Body}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression<Action> BindParameters<T1, T2, T3>(this Expression<Action<T1, T2, T3>> expression, Expression p1, Expression p2, Expression p3)
+        public static Expression BindParametersAndReturnBody<T1, T2, T3>(this Expression<Action<T1, T2, T3>> expression,
+            Expression p1, Expression p2, Expression p3)
         {
-            return Expression.Lambda<Action>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(3)
-                        {
-                            {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
-                            {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2},
-                            {expression.Parameters[2], (p3 as Expression<Func<T3>>)?.Body ?? p3}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(3)
+                    {
+                        {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
+                        {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2},
+                        {expression.Parameters[2], (p3 as Expression<Func<T3>>)?.Body ?? p3}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression<Action> BindParameters<T1, T2, T3>(this Expression<Action<T1, T2, T3>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3)
+        public static Expression BindParametersAndReturnBody<T1, T2, T3>(this Expression<Action<T1, T2, T3>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3)
         {
-            return Expression.Lambda<Action>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(3)
-                        {
-                            {expression.Parameters[0], p1.Body},
-                            {expression.Parameters[1], p2.Body},
-                            {expression.Parameters[2], p3.Body}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(3)
+                    {
+                        {expression.Parameters[0], p1.Body},
+                        {expression.Parameters[1], p2.Body},
+                        {expression.Parameters[2], p3.Body}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, T3, TResult>(this Expression<Func<T1, T2, T3, TResult>> expression, Expression p1, Expression p2, Expression p3)
+        public static Expression<Func<TResult>> BindParameters<T1, T2, T3, TResult>(this Expression<Func<T1, T2, T3, TResult>> expression,
+            Expression p1, Expression p2, Expression p3)
         {
-            var boundExpression = ParameterBinder3.BindParameters(expression, p1, p2, p3);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder3.BindParametersAndReturnBody(expression, p1, p2, p3);
+            return Expression.Lambda<Func<TResult>>(boundExpression);
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, T3, TResult>(this Expression<Func<T1, T2, T3, TResult>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3)
+        public static Expression<Func<TResult>> BindParameters<T1, T2, T3, TResult>(this Expression<Func<T1, T2, T3, TResult>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3)
         {
-            var boundExpression = ParameterBinder3.BindParameters(expression, p1, p2, p3);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder3.BindParametersAndReturnBody(expression, p1, p2, p3);
+            return Expression.Lambda<Func<TResult>>(boundExpression);
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, T3>(this Expression<Action<T1, T2, T3>> expression, Expression p1, Expression p2, Expression p3)
+        public static Expression<Action> BindParameters<T1, T2, T3>(this Expression<Action<T1, T2, T3>> expression,
+            Expression p1, Expression p2, Expression p3)
         {
-            var boundExpression = ParameterBinder3.BindParameters(expression, p1, p2, p3);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder3.BindParametersAndReturnBody(expression, p1, p2, p3);
+            return Expression.Lambda<Action>(boundExpression);
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, T3>(this Expression<Action<T1, T2, T3>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3)
+        public static Expression<Action> BindParameters<T1, T2, T3>(this Expression<Action<T1, T2, T3>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3)
         {
-            var boundExpression = ParameterBinder3.BindParameters(expression, p1, p2, p3);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder3.BindParametersAndReturnBody(expression, p1, p2, p3);
+            return Expression.Lambda<Action>(boundExpression);
         }
     }
 #endregion
@@ -603,84 +615,88 @@ namespace ExpressionToolkit
         }
 #endregion
 
-        public static Expression<Func<TResult>> BindParameters<T1, T2, T3, T4, TResult>(this Expression<Func<T1, T2, T3, T4, TResult>> expression, Expression p1, Expression p2, Expression p3, Expression p4)
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, TResult>(this Expression<Func<T1, T2, T3, T4, TResult>> expression,
+            Expression p1, Expression p2, Expression p3, Expression p4)
         {
-            return Expression.Lambda<Func<TResult>>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(4)
-                        {
-                            {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
-                            {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2},
-                            {expression.Parameters[2], (p3 as Expression<Func<T3>>)?.Body ?? p3},
-                            {expression.Parameters[3], (p4 as Expression<Func<T4>>)?.Body ?? p4}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(4)
+                    {
+                        {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
+                        {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2},
+                        {expression.Parameters[2], (p3 as Expression<Func<T3>>)?.Body ?? p3},
+                        {expression.Parameters[3], (p4 as Expression<Func<T4>>)?.Body ?? p4}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression<Func<TResult>> BindParameters<T1, T2, T3, T4, TResult>(this Expression<Func<T1, T2, T3, T4, TResult>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4)
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, TResult>(this Expression<Func<T1, T2, T3, T4, TResult>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4)
         {
-            return Expression.Lambda<Func<TResult>>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(4)
-                        {
-                            {expression.Parameters[0], p1.Body},
-                            {expression.Parameters[1], p2.Body},
-                            {expression.Parameters[2], p3.Body},
-                            {expression.Parameters[3], p4.Body}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(4)
+                    {
+                        {expression.Parameters[0], p1.Body},
+                        {expression.Parameters[1], p2.Body},
+                        {expression.Parameters[2], p3.Body},
+                        {expression.Parameters[3], p4.Body}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression<Action> BindParameters<T1, T2, T3, T4>(this Expression<Action<T1, T2, T3, T4>> expression, Expression p1, Expression p2, Expression p3, Expression p4)
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4>(this Expression<Action<T1, T2, T3, T4>> expression,
+            Expression p1, Expression p2, Expression p3, Expression p4)
         {
-            return Expression.Lambda<Action>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(4)
-                        {
-                            {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
-                            {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2},
-                            {expression.Parameters[2], (p3 as Expression<Func<T3>>)?.Body ?? p3},
-                            {expression.Parameters[3], (p4 as Expression<Func<T4>>)?.Body ?? p4}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(4)
+                    {
+                        {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
+                        {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2},
+                        {expression.Parameters[2], (p3 as Expression<Func<T3>>)?.Body ?? p3},
+                        {expression.Parameters[3], (p4 as Expression<Func<T4>>)?.Body ?? p4}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression<Action> BindParameters<T1, T2, T3, T4>(this Expression<Action<T1, T2, T3, T4>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4)
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4>(this Expression<Action<T1, T2, T3, T4>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4)
         {
-            return Expression.Lambda<Action>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(4)
-                        {
-                            {expression.Parameters[0], p1.Body},
-                            {expression.Parameters[1], p2.Body},
-                            {expression.Parameters[2], p3.Body},
-                            {expression.Parameters[3], p4.Body}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(4)
+                    {
+                        {expression.Parameters[0], p1.Body},
+                        {expression.Parameters[1], p2.Body},
+                        {expression.Parameters[2], p3.Body},
+                        {expression.Parameters[3], p4.Body}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, TResult>(this Expression<Func<T1, T2, T3, T4, TResult>> expression, Expression p1, Expression p2, Expression p3, Expression p4)
+        public static Expression<Func<TResult>> BindParameters<T1, T2, T3, T4, TResult>(this Expression<Func<T1, T2, T3, T4, TResult>> expression,
+            Expression p1, Expression p2, Expression p3, Expression p4)
         {
-            var boundExpression = ParameterBinder4.BindParameters(expression, p1, p2, p3, p4);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder4.BindParametersAndReturnBody(expression, p1, p2, p3, p4);
+            return Expression.Lambda<Func<TResult>>(boundExpression);
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, TResult>(this Expression<Func<T1, T2, T3, T4, TResult>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4)
+        public static Expression<Func<TResult>> BindParameters<T1, T2, T3, T4, TResult>(this Expression<Func<T1, T2, T3, T4, TResult>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4)
         {
-            var boundExpression = ParameterBinder4.BindParameters(expression, p1, p2, p3, p4);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder4.BindParametersAndReturnBody(expression, p1, p2, p3, p4);
+            return Expression.Lambda<Func<TResult>>(boundExpression);
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4>(this Expression<Action<T1, T2, T3, T4>> expression, Expression p1, Expression p2, Expression p3, Expression p4)
+        public static Expression<Action> BindParameters<T1, T2, T3, T4>(this Expression<Action<T1, T2, T3, T4>> expression,
+            Expression p1, Expression p2, Expression p3, Expression p4)
         {
-            var boundExpression = ParameterBinder4.BindParameters(expression, p1, p2, p3, p4);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder4.BindParametersAndReturnBody(expression, p1, p2, p3, p4);
+            return Expression.Lambda<Action>(boundExpression);
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4>(this Expression<Action<T1, T2, T3, T4>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4)
+        public static Expression<Action> BindParameters<T1, T2, T3, T4>(this Expression<Action<T1, T2, T3, T4>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4)
         {
-            var boundExpression = ParameterBinder4.BindParameters(expression, p1, p2, p3, p4);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder4.BindParametersAndReturnBody(expression, p1, p2, p3, p4);
+            return Expression.Lambda<Action>(boundExpression);
         }
     }
 #endregion
@@ -937,88 +953,92 @@ namespace ExpressionToolkit
         }
 #endregion
 
-        public static Expression<Func<TResult>> BindParameters<T1, T2, T3, T4, T5, TResult>(this Expression<Func<T1, T2, T3, T4, T5, TResult>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5)
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, TResult>(this Expression<Func<T1, T2, T3, T4, T5, TResult>> expression,
+            Expression p1, Expression p2, Expression p3, Expression p4, Expression p5)
         {
-            return Expression.Lambda<Func<TResult>>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(5)
-                        {
-                            {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
-                            {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2},
-                            {expression.Parameters[2], (p3 as Expression<Func<T3>>)?.Body ?? p3},
-                            {expression.Parameters[3], (p4 as Expression<Func<T4>>)?.Body ?? p4},
-                            {expression.Parameters[4], (p5 as Expression<Func<T5>>)?.Body ?? p5}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(5)
+                    {
+                        {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
+                        {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2},
+                        {expression.Parameters[2], (p3 as Expression<Func<T3>>)?.Body ?? p3},
+                        {expression.Parameters[3], (p4 as Expression<Func<T4>>)?.Body ?? p4},
+                        {expression.Parameters[4], (p5 as Expression<Func<T5>>)?.Body ?? p5}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression<Func<TResult>> BindParameters<T1, T2, T3, T4, T5, TResult>(this Expression<Func<T1, T2, T3, T4, T5, TResult>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5)
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, TResult>(this Expression<Func<T1, T2, T3, T4, T5, TResult>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5)
         {
-            return Expression.Lambda<Func<TResult>>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(5)
-                        {
-                            {expression.Parameters[0], p1.Body},
-                            {expression.Parameters[1], p2.Body},
-                            {expression.Parameters[2], p3.Body},
-                            {expression.Parameters[3], p4.Body},
-                            {expression.Parameters[4], p5.Body}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(5)
+                    {
+                        {expression.Parameters[0], p1.Body},
+                        {expression.Parameters[1], p2.Body},
+                        {expression.Parameters[2], p3.Body},
+                        {expression.Parameters[3], p4.Body},
+                        {expression.Parameters[4], p5.Body}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression<Action> BindParameters<T1, T2, T3, T4, T5>(this Expression<Action<T1, T2, T3, T4, T5>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5)
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5>(this Expression<Action<T1, T2, T3, T4, T5>> expression,
+            Expression p1, Expression p2, Expression p3, Expression p4, Expression p5)
         {
-            return Expression.Lambda<Action>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(5)
-                        {
-                            {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
-                            {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2},
-                            {expression.Parameters[2], (p3 as Expression<Func<T3>>)?.Body ?? p3},
-                            {expression.Parameters[3], (p4 as Expression<Func<T4>>)?.Body ?? p4},
-                            {expression.Parameters[4], (p5 as Expression<Func<T5>>)?.Body ?? p5}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(5)
+                    {
+                        {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
+                        {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2},
+                        {expression.Parameters[2], (p3 as Expression<Func<T3>>)?.Body ?? p3},
+                        {expression.Parameters[3], (p4 as Expression<Func<T4>>)?.Body ?? p4},
+                        {expression.Parameters[4], (p5 as Expression<Func<T5>>)?.Body ?? p5}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression<Action> BindParameters<T1, T2, T3, T4, T5>(this Expression<Action<T1, T2, T3, T4, T5>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5)
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5>(this Expression<Action<T1, T2, T3, T4, T5>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5)
         {
-            return Expression.Lambda<Action>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(5)
-                        {
-                            {expression.Parameters[0], p1.Body},
-                            {expression.Parameters[1], p2.Body},
-                            {expression.Parameters[2], p3.Body},
-                            {expression.Parameters[3], p4.Body},
-                            {expression.Parameters[4], p5.Body}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(5)
+                    {
+                        {expression.Parameters[0], p1.Body},
+                        {expression.Parameters[1], p2.Body},
+                        {expression.Parameters[2], p3.Body},
+                        {expression.Parameters[3], p4.Body},
+                        {expression.Parameters[4], p5.Body}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, TResult>(this Expression<Func<T1, T2, T3, T4, T5, TResult>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5)
+        public static Expression<Func<TResult>> BindParameters<T1, T2, T3, T4, T5, TResult>(this Expression<Func<T1, T2, T3, T4, T5, TResult>> expression,
+            Expression p1, Expression p2, Expression p3, Expression p4, Expression p5)
         {
-            var boundExpression = ParameterBinder5.BindParameters(expression, p1, p2, p3, p4, p5);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder5.BindParametersAndReturnBody(expression, p1, p2, p3, p4, p5);
+            return Expression.Lambda<Func<TResult>>(boundExpression);
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, TResult>(this Expression<Func<T1, T2, T3, T4, T5, TResult>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5)
+        public static Expression<Func<TResult>> BindParameters<T1, T2, T3, T4, T5, TResult>(this Expression<Func<T1, T2, T3, T4, T5, TResult>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5)
         {
-            var boundExpression = ParameterBinder5.BindParameters(expression, p1, p2, p3, p4, p5);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder5.BindParametersAndReturnBody(expression, p1, p2, p3, p4, p5);
+            return Expression.Lambda<Func<TResult>>(boundExpression);
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5>(this Expression<Action<T1, T2, T3, T4, T5>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5)
+        public static Expression<Action> BindParameters<T1, T2, T3, T4, T5>(this Expression<Action<T1, T2, T3, T4, T5>> expression,
+            Expression p1, Expression p2, Expression p3, Expression p4, Expression p5)
         {
-            var boundExpression = ParameterBinder5.BindParameters(expression, p1, p2, p3, p4, p5);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder5.BindParametersAndReturnBody(expression, p1, p2, p3, p4, p5);
+            return Expression.Lambda<Action>(boundExpression);
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5>(this Expression<Action<T1, T2, T3, T4, T5>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5)
+        public static Expression<Action> BindParameters<T1, T2, T3, T4, T5>(this Expression<Action<T1, T2, T3, T4, T5>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5)
         {
-            var boundExpression = ParameterBinder5.BindParameters(expression, p1, p2, p3, p4, p5);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder5.BindParametersAndReturnBody(expression, p1, p2, p3, p4, p5);
+            return Expression.Lambda<Action>(boundExpression);
         }
     }
 #endregion
@@ -1357,92 +1377,96 @@ namespace ExpressionToolkit
         }
 #endregion
 
-        public static Expression<Func<TResult>> BindParameters<T1, T2, T3, T4, T5, T6, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, TResult>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6)
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, TResult>> expression,
+            Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6)
         {
-            return Expression.Lambda<Func<TResult>>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(6)
-                        {
-                            {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
-                            {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2},
-                            {expression.Parameters[2], (p3 as Expression<Func<T3>>)?.Body ?? p3},
-                            {expression.Parameters[3], (p4 as Expression<Func<T4>>)?.Body ?? p4},
-                            {expression.Parameters[4], (p5 as Expression<Func<T5>>)?.Body ?? p5},
-                            {expression.Parameters[5], (p6 as Expression<Func<T6>>)?.Body ?? p6}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(6)
+                    {
+                        {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
+                        {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2},
+                        {expression.Parameters[2], (p3 as Expression<Func<T3>>)?.Body ?? p3},
+                        {expression.Parameters[3], (p4 as Expression<Func<T4>>)?.Body ?? p4},
+                        {expression.Parameters[4], (p5 as Expression<Func<T5>>)?.Body ?? p5},
+                        {expression.Parameters[5], (p6 as Expression<Func<T6>>)?.Body ?? p6}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression<Func<TResult>> BindParameters<T1, T2, T3, T4, T5, T6, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, TResult>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6)
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, TResult>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6)
         {
-            return Expression.Lambda<Func<TResult>>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(6)
-                        {
-                            {expression.Parameters[0], p1.Body},
-                            {expression.Parameters[1], p2.Body},
-                            {expression.Parameters[2], p3.Body},
-                            {expression.Parameters[3], p4.Body},
-                            {expression.Parameters[4], p5.Body},
-                            {expression.Parameters[5], p6.Body}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(6)
+                    {
+                        {expression.Parameters[0], p1.Body},
+                        {expression.Parameters[1], p2.Body},
+                        {expression.Parameters[2], p3.Body},
+                        {expression.Parameters[3], p4.Body},
+                        {expression.Parameters[4], p5.Body},
+                        {expression.Parameters[5], p6.Body}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression<Action> BindParameters<T1, T2, T3, T4, T5, T6>(this Expression<Action<T1, T2, T3, T4, T5, T6>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6)
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6>(this Expression<Action<T1, T2, T3, T4, T5, T6>> expression,
+            Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6)
         {
-            return Expression.Lambda<Action>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(6)
-                        {
-                            {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
-                            {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2},
-                            {expression.Parameters[2], (p3 as Expression<Func<T3>>)?.Body ?? p3},
-                            {expression.Parameters[3], (p4 as Expression<Func<T4>>)?.Body ?? p4},
-                            {expression.Parameters[4], (p5 as Expression<Func<T5>>)?.Body ?? p5},
-                            {expression.Parameters[5], (p6 as Expression<Func<T6>>)?.Body ?? p6}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(6)
+                    {
+                        {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
+                        {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2},
+                        {expression.Parameters[2], (p3 as Expression<Func<T3>>)?.Body ?? p3},
+                        {expression.Parameters[3], (p4 as Expression<Func<T4>>)?.Body ?? p4},
+                        {expression.Parameters[4], (p5 as Expression<Func<T5>>)?.Body ?? p5},
+                        {expression.Parameters[5], (p6 as Expression<Func<T6>>)?.Body ?? p6}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression<Action> BindParameters<T1, T2, T3, T4, T5, T6>(this Expression<Action<T1, T2, T3, T4, T5, T6>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6)
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6>(this Expression<Action<T1, T2, T3, T4, T5, T6>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6)
         {
-            return Expression.Lambda<Action>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(6)
-                        {
-                            {expression.Parameters[0], p1.Body},
-                            {expression.Parameters[1], p2.Body},
-                            {expression.Parameters[2], p3.Body},
-                            {expression.Parameters[3], p4.Body},
-                            {expression.Parameters[4], p5.Body},
-                            {expression.Parameters[5], p6.Body}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(6)
+                    {
+                        {expression.Parameters[0], p1.Body},
+                        {expression.Parameters[1], p2.Body},
+                        {expression.Parameters[2], p3.Body},
+                        {expression.Parameters[3], p4.Body},
+                        {expression.Parameters[4], p5.Body},
+                        {expression.Parameters[5], p6.Body}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, TResult>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6)
+        public static Expression<Func<TResult>> BindParameters<T1, T2, T3, T4, T5, T6, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, TResult>> expression,
+            Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6)
         {
-            var boundExpression = ParameterBinder6.BindParameters(expression, p1, p2, p3, p4, p5, p6);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder6.BindParametersAndReturnBody(expression, p1, p2, p3, p4, p5, p6);
+            return Expression.Lambda<Func<TResult>>(boundExpression);
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, TResult>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6)
+        public static Expression<Func<TResult>> BindParameters<T1, T2, T3, T4, T5, T6, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, TResult>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6)
         {
-            var boundExpression = ParameterBinder6.BindParameters(expression, p1, p2, p3, p4, p5, p6);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder6.BindParametersAndReturnBody(expression, p1, p2, p3, p4, p5, p6);
+            return Expression.Lambda<Func<TResult>>(boundExpression);
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6>(this Expression<Action<T1, T2, T3, T4, T5, T6>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6)
+        public static Expression<Action> BindParameters<T1, T2, T3, T4, T5, T6>(this Expression<Action<T1, T2, T3, T4, T5, T6>> expression,
+            Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6)
         {
-            var boundExpression = ParameterBinder6.BindParameters(expression, p1, p2, p3, p4, p5, p6);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder6.BindParametersAndReturnBody(expression, p1, p2, p3, p4, p5, p6);
+            return Expression.Lambda<Action>(boundExpression);
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6>(this Expression<Action<T1, T2, T3, T4, T5, T6>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6)
+        public static Expression<Action> BindParameters<T1, T2, T3, T4, T5, T6>(this Expression<Action<T1, T2, T3, T4, T5, T6>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6)
         {
-            var boundExpression = ParameterBinder6.BindParameters(expression, p1, p2, p3, p4, p5, p6);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder6.BindParametersAndReturnBody(expression, p1, p2, p3, p4, p5, p6);
+            return Expression.Lambda<Action>(boundExpression);
         }
     }
 #endregion
@@ -1871,96 +1895,100 @@ namespace ExpressionToolkit
         }
 #endregion
 
-        public static Expression<Func<TResult>> BindParameters<T1, T2, T3, T4, T5, T6, T7, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, TResult>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7)
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, TResult>> expression,
+            Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7)
         {
-            return Expression.Lambda<Func<TResult>>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(7)
-                        {
-                            {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
-                            {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2},
-                            {expression.Parameters[2], (p3 as Expression<Func<T3>>)?.Body ?? p3},
-                            {expression.Parameters[3], (p4 as Expression<Func<T4>>)?.Body ?? p4},
-                            {expression.Parameters[4], (p5 as Expression<Func<T5>>)?.Body ?? p5},
-                            {expression.Parameters[5], (p6 as Expression<Func<T6>>)?.Body ?? p6},
-                            {expression.Parameters[6], (p7 as Expression<Func<T7>>)?.Body ?? p7}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(7)
+                    {
+                        {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
+                        {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2},
+                        {expression.Parameters[2], (p3 as Expression<Func<T3>>)?.Body ?? p3},
+                        {expression.Parameters[3], (p4 as Expression<Func<T4>>)?.Body ?? p4},
+                        {expression.Parameters[4], (p5 as Expression<Func<T5>>)?.Body ?? p5},
+                        {expression.Parameters[5], (p6 as Expression<Func<T6>>)?.Body ?? p6},
+                        {expression.Parameters[6], (p7 as Expression<Func<T7>>)?.Body ?? p7}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression<Func<TResult>> BindParameters<T1, T2, T3, T4, T5, T6, T7, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, TResult>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7)
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, TResult>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7)
         {
-            return Expression.Lambda<Func<TResult>>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(7)
-                        {
-                            {expression.Parameters[0], p1.Body},
-                            {expression.Parameters[1], p2.Body},
-                            {expression.Parameters[2], p3.Body},
-                            {expression.Parameters[3], p4.Body},
-                            {expression.Parameters[4], p5.Body},
-                            {expression.Parameters[5], p6.Body},
-                            {expression.Parameters[6], p7.Body}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(7)
+                    {
+                        {expression.Parameters[0], p1.Body},
+                        {expression.Parameters[1], p2.Body},
+                        {expression.Parameters[2], p3.Body},
+                        {expression.Parameters[3], p4.Body},
+                        {expression.Parameters[4], p5.Body},
+                        {expression.Parameters[5], p6.Body},
+                        {expression.Parameters[6], p7.Body}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression<Action> BindParameters<T1, T2, T3, T4, T5, T6, T7>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7)
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7>> expression,
+            Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7)
         {
-            return Expression.Lambda<Action>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(7)
-                        {
-                            {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
-                            {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2},
-                            {expression.Parameters[2], (p3 as Expression<Func<T3>>)?.Body ?? p3},
-                            {expression.Parameters[3], (p4 as Expression<Func<T4>>)?.Body ?? p4},
-                            {expression.Parameters[4], (p5 as Expression<Func<T5>>)?.Body ?? p5},
-                            {expression.Parameters[5], (p6 as Expression<Func<T6>>)?.Body ?? p6},
-                            {expression.Parameters[6], (p7 as Expression<Func<T7>>)?.Body ?? p7}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(7)
+                    {
+                        {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
+                        {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2},
+                        {expression.Parameters[2], (p3 as Expression<Func<T3>>)?.Body ?? p3},
+                        {expression.Parameters[3], (p4 as Expression<Func<T4>>)?.Body ?? p4},
+                        {expression.Parameters[4], (p5 as Expression<Func<T5>>)?.Body ?? p5},
+                        {expression.Parameters[5], (p6 as Expression<Func<T6>>)?.Body ?? p6},
+                        {expression.Parameters[6], (p7 as Expression<Func<T7>>)?.Body ?? p7}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression<Action> BindParameters<T1, T2, T3, T4, T5, T6, T7>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7)
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7)
         {
-            return Expression.Lambda<Action>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(7)
-                        {
-                            {expression.Parameters[0], p1.Body},
-                            {expression.Parameters[1], p2.Body},
-                            {expression.Parameters[2], p3.Body},
-                            {expression.Parameters[3], p4.Body},
-                            {expression.Parameters[4], p5.Body},
-                            {expression.Parameters[5], p6.Body},
-                            {expression.Parameters[6], p7.Body}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(7)
+                    {
+                        {expression.Parameters[0], p1.Body},
+                        {expression.Parameters[1], p2.Body},
+                        {expression.Parameters[2], p3.Body},
+                        {expression.Parameters[3], p4.Body},
+                        {expression.Parameters[4], p5.Body},
+                        {expression.Parameters[5], p6.Body},
+                        {expression.Parameters[6], p7.Body}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, TResult>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7)
+        public static Expression<Func<TResult>> BindParameters<T1, T2, T3, T4, T5, T6, T7, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, TResult>> expression,
+            Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7)
         {
-            var boundExpression = ParameterBinder7.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder7.BindParametersAndReturnBody(expression, p1, p2, p3, p4, p5, p6, p7);
+            return Expression.Lambda<Func<TResult>>(boundExpression);
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, TResult>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7)
+        public static Expression<Func<TResult>> BindParameters<T1, T2, T3, T4, T5, T6, T7, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, TResult>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7)
         {
-            var boundExpression = ParameterBinder7.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder7.BindParametersAndReturnBody(expression, p1, p2, p3, p4, p5, p6, p7);
+            return Expression.Lambda<Func<TResult>>(boundExpression);
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7)
+        public static Expression<Action> BindParameters<T1, T2, T3, T4, T5, T6, T7>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7>> expression,
+            Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7)
         {
-            var boundExpression = ParameterBinder7.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder7.BindParametersAndReturnBody(expression, p1, p2, p3, p4, p5, p6, p7);
+            return Expression.Lambda<Action>(boundExpression);
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7)
+        public static Expression<Action> BindParameters<T1, T2, T3, T4, T5, T6, T7>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7)
         {
-            var boundExpression = ParameterBinder7.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder7.BindParametersAndReturnBody(expression, p1, p2, p3, p4, p5, p6, p7);
+            return Expression.Lambda<Action>(boundExpression);
         }
     }
 #endregion
@@ -2487,100 +2515,104 @@ namespace ExpressionToolkit
         }
 #endregion
 
-        public static Expression<Func<TResult>> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, TResult>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8)
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, TResult>> expression,
+            Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8)
         {
-            return Expression.Lambda<Func<TResult>>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(8)
-                        {
-                            {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
-                            {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2},
-                            {expression.Parameters[2], (p3 as Expression<Func<T3>>)?.Body ?? p3},
-                            {expression.Parameters[3], (p4 as Expression<Func<T4>>)?.Body ?? p4},
-                            {expression.Parameters[4], (p5 as Expression<Func<T5>>)?.Body ?? p5},
-                            {expression.Parameters[5], (p6 as Expression<Func<T6>>)?.Body ?? p6},
-                            {expression.Parameters[6], (p7 as Expression<Func<T7>>)?.Body ?? p7},
-                            {expression.Parameters[7], (p8 as Expression<Func<T8>>)?.Body ?? p8}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(8)
+                    {
+                        {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
+                        {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2},
+                        {expression.Parameters[2], (p3 as Expression<Func<T3>>)?.Body ?? p3},
+                        {expression.Parameters[3], (p4 as Expression<Func<T4>>)?.Body ?? p4},
+                        {expression.Parameters[4], (p5 as Expression<Func<T5>>)?.Body ?? p5},
+                        {expression.Parameters[5], (p6 as Expression<Func<T6>>)?.Body ?? p6},
+                        {expression.Parameters[6], (p7 as Expression<Func<T7>>)?.Body ?? p7},
+                        {expression.Parameters[7], (p8 as Expression<Func<T8>>)?.Body ?? p8}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression<Func<TResult>> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, TResult>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8)
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, TResult>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8)
         {
-            return Expression.Lambda<Func<TResult>>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(8)
-                        {
-                            {expression.Parameters[0], p1.Body},
-                            {expression.Parameters[1], p2.Body},
-                            {expression.Parameters[2], p3.Body},
-                            {expression.Parameters[3], p4.Body},
-                            {expression.Parameters[4], p5.Body},
-                            {expression.Parameters[5], p6.Body},
-                            {expression.Parameters[6], p7.Body},
-                            {expression.Parameters[7], p8.Body}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(8)
+                    {
+                        {expression.Parameters[0], p1.Body},
+                        {expression.Parameters[1], p2.Body},
+                        {expression.Parameters[2], p3.Body},
+                        {expression.Parameters[3], p4.Body},
+                        {expression.Parameters[4], p5.Body},
+                        {expression.Parameters[5], p6.Body},
+                        {expression.Parameters[6], p7.Body},
+                        {expression.Parameters[7], p8.Body}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression<Action> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8)
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8>> expression,
+            Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8)
         {
-            return Expression.Lambda<Action>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(8)
-                        {
-                            {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
-                            {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2},
-                            {expression.Parameters[2], (p3 as Expression<Func<T3>>)?.Body ?? p3},
-                            {expression.Parameters[3], (p4 as Expression<Func<T4>>)?.Body ?? p4},
-                            {expression.Parameters[4], (p5 as Expression<Func<T5>>)?.Body ?? p5},
-                            {expression.Parameters[5], (p6 as Expression<Func<T6>>)?.Body ?? p6},
-                            {expression.Parameters[6], (p7 as Expression<Func<T7>>)?.Body ?? p7},
-                            {expression.Parameters[7], (p8 as Expression<Func<T8>>)?.Body ?? p8}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(8)
+                    {
+                        {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
+                        {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2},
+                        {expression.Parameters[2], (p3 as Expression<Func<T3>>)?.Body ?? p3},
+                        {expression.Parameters[3], (p4 as Expression<Func<T4>>)?.Body ?? p4},
+                        {expression.Parameters[4], (p5 as Expression<Func<T5>>)?.Body ?? p5},
+                        {expression.Parameters[5], (p6 as Expression<Func<T6>>)?.Body ?? p6},
+                        {expression.Parameters[6], (p7 as Expression<Func<T7>>)?.Body ?? p7},
+                        {expression.Parameters[7], (p8 as Expression<Func<T8>>)?.Body ?? p8}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression<Action> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8)
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8)
         {
-            return Expression.Lambda<Action>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(8)
-                        {
-                            {expression.Parameters[0], p1.Body},
-                            {expression.Parameters[1], p2.Body},
-                            {expression.Parameters[2], p3.Body},
-                            {expression.Parameters[3], p4.Body},
-                            {expression.Parameters[4], p5.Body},
-                            {expression.Parameters[5], p6.Body},
-                            {expression.Parameters[6], p7.Body},
-                            {expression.Parameters[7], p8.Body}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(8)
+                    {
+                        {expression.Parameters[0], p1.Body},
+                        {expression.Parameters[1], p2.Body},
+                        {expression.Parameters[2], p3.Body},
+                        {expression.Parameters[3], p4.Body},
+                        {expression.Parameters[4], p5.Body},
+                        {expression.Parameters[5], p6.Body},
+                        {expression.Parameters[6], p7.Body},
+                        {expression.Parameters[7], p8.Body}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, TResult>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8)
+        public static Expression<Func<TResult>> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, TResult>> expression,
+            Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8)
         {
-            var boundExpression = ParameterBinder8.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder8.BindParametersAndReturnBody(expression, p1, p2, p3, p4, p5, p6, p7, p8);
+            return Expression.Lambda<Func<TResult>>(boundExpression);
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, TResult>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8)
+        public static Expression<Func<TResult>> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, TResult>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8)
         {
-            var boundExpression = ParameterBinder8.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder8.BindParametersAndReturnBody(expression, p1, p2, p3, p4, p5, p6, p7, p8);
+            return Expression.Lambda<Func<TResult>>(boundExpression);
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8)
+        public static Expression<Action> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8>> expression,
+            Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8)
         {
-            var boundExpression = ParameterBinder8.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder8.BindParametersAndReturnBody(expression, p1, p2, p3, p4, p5, p6, p7, p8);
+            return Expression.Lambda<Action>(boundExpression);
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8)
+        public static Expression<Action> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8)
         {
-            var boundExpression = ParameterBinder8.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder8.BindParametersAndReturnBody(expression, p1, p2, p3, p4, p5, p6, p7, p8);
+            return Expression.Lambda<Action>(boundExpression);
         }
     }
 #endregion
@@ -3213,104 +3245,108 @@ namespace ExpressionToolkit
         }
 #endregion
 
-        public static Expression<Func<TResult>> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, TResult>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9)
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, TResult>> expression,
+            Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9)
         {
-            return Expression.Lambda<Func<TResult>>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(9)
-                        {
-                            {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
-                            {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2},
-                            {expression.Parameters[2], (p3 as Expression<Func<T3>>)?.Body ?? p3},
-                            {expression.Parameters[3], (p4 as Expression<Func<T4>>)?.Body ?? p4},
-                            {expression.Parameters[4], (p5 as Expression<Func<T5>>)?.Body ?? p5},
-                            {expression.Parameters[5], (p6 as Expression<Func<T6>>)?.Body ?? p6},
-                            {expression.Parameters[6], (p7 as Expression<Func<T7>>)?.Body ?? p7},
-                            {expression.Parameters[7], (p8 as Expression<Func<T8>>)?.Body ?? p8},
-                            {expression.Parameters[8], (p9 as Expression<Func<T9>>)?.Body ?? p9}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(9)
+                    {
+                        {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
+                        {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2},
+                        {expression.Parameters[2], (p3 as Expression<Func<T3>>)?.Body ?? p3},
+                        {expression.Parameters[3], (p4 as Expression<Func<T4>>)?.Body ?? p4},
+                        {expression.Parameters[4], (p5 as Expression<Func<T5>>)?.Body ?? p5},
+                        {expression.Parameters[5], (p6 as Expression<Func<T6>>)?.Body ?? p6},
+                        {expression.Parameters[6], (p7 as Expression<Func<T7>>)?.Body ?? p7},
+                        {expression.Parameters[7], (p8 as Expression<Func<T8>>)?.Body ?? p8},
+                        {expression.Parameters[8], (p9 as Expression<Func<T9>>)?.Body ?? p9}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression<Func<TResult>> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, TResult>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9)
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, TResult>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9)
         {
-            return Expression.Lambda<Func<TResult>>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(9)
-                        {
-                            {expression.Parameters[0], p1.Body},
-                            {expression.Parameters[1], p2.Body},
-                            {expression.Parameters[2], p3.Body},
-                            {expression.Parameters[3], p4.Body},
-                            {expression.Parameters[4], p5.Body},
-                            {expression.Parameters[5], p6.Body},
-                            {expression.Parameters[6], p7.Body},
-                            {expression.Parameters[7], p8.Body},
-                            {expression.Parameters[8], p9.Body}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(9)
+                    {
+                        {expression.Parameters[0], p1.Body},
+                        {expression.Parameters[1], p2.Body},
+                        {expression.Parameters[2], p3.Body},
+                        {expression.Parameters[3], p4.Body},
+                        {expression.Parameters[4], p5.Body},
+                        {expression.Parameters[5], p6.Body},
+                        {expression.Parameters[6], p7.Body},
+                        {expression.Parameters[7], p8.Body},
+                        {expression.Parameters[8], p9.Body}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression<Action> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9)
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9>> expression,
+            Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9)
         {
-            return Expression.Lambda<Action>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(9)
-                        {
-                            {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
-                            {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2},
-                            {expression.Parameters[2], (p3 as Expression<Func<T3>>)?.Body ?? p3},
-                            {expression.Parameters[3], (p4 as Expression<Func<T4>>)?.Body ?? p4},
-                            {expression.Parameters[4], (p5 as Expression<Func<T5>>)?.Body ?? p5},
-                            {expression.Parameters[5], (p6 as Expression<Func<T6>>)?.Body ?? p6},
-                            {expression.Parameters[6], (p7 as Expression<Func<T7>>)?.Body ?? p7},
-                            {expression.Parameters[7], (p8 as Expression<Func<T8>>)?.Body ?? p8},
-                            {expression.Parameters[8], (p9 as Expression<Func<T9>>)?.Body ?? p9}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(9)
+                    {
+                        {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
+                        {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2},
+                        {expression.Parameters[2], (p3 as Expression<Func<T3>>)?.Body ?? p3},
+                        {expression.Parameters[3], (p4 as Expression<Func<T4>>)?.Body ?? p4},
+                        {expression.Parameters[4], (p5 as Expression<Func<T5>>)?.Body ?? p5},
+                        {expression.Parameters[5], (p6 as Expression<Func<T6>>)?.Body ?? p6},
+                        {expression.Parameters[6], (p7 as Expression<Func<T7>>)?.Body ?? p7},
+                        {expression.Parameters[7], (p8 as Expression<Func<T8>>)?.Body ?? p8},
+                        {expression.Parameters[8], (p9 as Expression<Func<T9>>)?.Body ?? p9}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression<Action> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9)
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9)
         {
-            return Expression.Lambda<Action>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(9)
-                        {
-                            {expression.Parameters[0], p1.Body},
-                            {expression.Parameters[1], p2.Body},
-                            {expression.Parameters[2], p3.Body},
-                            {expression.Parameters[3], p4.Body},
-                            {expression.Parameters[4], p5.Body},
-                            {expression.Parameters[5], p6.Body},
-                            {expression.Parameters[6], p7.Body},
-                            {expression.Parameters[7], p8.Body},
-                            {expression.Parameters[8], p9.Body}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(9)
+                    {
+                        {expression.Parameters[0], p1.Body},
+                        {expression.Parameters[1], p2.Body},
+                        {expression.Parameters[2], p3.Body},
+                        {expression.Parameters[3], p4.Body},
+                        {expression.Parameters[4], p5.Body},
+                        {expression.Parameters[5], p6.Body},
+                        {expression.Parameters[6], p7.Body},
+                        {expression.Parameters[7], p8.Body},
+                        {expression.Parameters[8], p9.Body}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, TResult>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9)
+        public static Expression<Func<TResult>> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, TResult>> expression,
+            Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9)
         {
-            var boundExpression = ParameterBinder9.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder9.BindParametersAndReturnBody(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9);
+            return Expression.Lambda<Func<TResult>>(boundExpression);
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, TResult>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9)
+        public static Expression<Func<TResult>> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, TResult>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9)
         {
-            var boundExpression = ParameterBinder9.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder9.BindParametersAndReturnBody(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9);
+            return Expression.Lambda<Func<TResult>>(boundExpression);
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9)
+        public static Expression<Action> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9>> expression,
+            Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9)
         {
-            var boundExpression = ParameterBinder9.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder9.BindParametersAndReturnBody(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9);
+            return Expression.Lambda<Action>(boundExpression);
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9)
+        public static Expression<Action> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9)
         {
-            var boundExpression = ParameterBinder9.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder9.BindParametersAndReturnBody(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9);
+            return Expression.Lambda<Action>(boundExpression);
         }
     }
 #endregion
@@ -4057,108 +4093,112 @@ namespace ExpressionToolkit
         }
 #endregion
 
-        public static Expression<Func<TResult>> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, TResult>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10)
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, TResult>> expression,
+            Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10)
         {
-            return Expression.Lambda<Func<TResult>>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(10)
-                        {
-                            {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
-                            {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2},
-                            {expression.Parameters[2], (p3 as Expression<Func<T3>>)?.Body ?? p3},
-                            {expression.Parameters[3], (p4 as Expression<Func<T4>>)?.Body ?? p4},
-                            {expression.Parameters[4], (p5 as Expression<Func<T5>>)?.Body ?? p5},
-                            {expression.Parameters[5], (p6 as Expression<Func<T6>>)?.Body ?? p6},
-                            {expression.Parameters[6], (p7 as Expression<Func<T7>>)?.Body ?? p7},
-                            {expression.Parameters[7], (p8 as Expression<Func<T8>>)?.Body ?? p8},
-                            {expression.Parameters[8], (p9 as Expression<Func<T9>>)?.Body ?? p9},
-                            {expression.Parameters[9], (p10 as Expression<Func<T10>>)?.Body ?? p10}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(10)
+                    {
+                        {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
+                        {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2},
+                        {expression.Parameters[2], (p3 as Expression<Func<T3>>)?.Body ?? p3},
+                        {expression.Parameters[3], (p4 as Expression<Func<T4>>)?.Body ?? p4},
+                        {expression.Parameters[4], (p5 as Expression<Func<T5>>)?.Body ?? p5},
+                        {expression.Parameters[5], (p6 as Expression<Func<T6>>)?.Body ?? p6},
+                        {expression.Parameters[6], (p7 as Expression<Func<T7>>)?.Body ?? p7},
+                        {expression.Parameters[7], (p8 as Expression<Func<T8>>)?.Body ?? p8},
+                        {expression.Parameters[8], (p9 as Expression<Func<T9>>)?.Body ?? p9},
+                        {expression.Parameters[9], (p10 as Expression<Func<T10>>)?.Body ?? p10}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression<Func<TResult>> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, TResult>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10)
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, TResult>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10)
         {
-            return Expression.Lambda<Func<TResult>>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(10)
-                        {
-                            {expression.Parameters[0], p1.Body},
-                            {expression.Parameters[1], p2.Body},
-                            {expression.Parameters[2], p3.Body},
-                            {expression.Parameters[3], p4.Body},
-                            {expression.Parameters[4], p5.Body},
-                            {expression.Parameters[5], p6.Body},
-                            {expression.Parameters[6], p7.Body},
-                            {expression.Parameters[7], p8.Body},
-                            {expression.Parameters[8], p9.Body},
-                            {expression.Parameters[9], p10.Body}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(10)
+                    {
+                        {expression.Parameters[0], p1.Body},
+                        {expression.Parameters[1], p2.Body},
+                        {expression.Parameters[2], p3.Body},
+                        {expression.Parameters[3], p4.Body},
+                        {expression.Parameters[4], p5.Body},
+                        {expression.Parameters[5], p6.Body},
+                        {expression.Parameters[6], p7.Body},
+                        {expression.Parameters[7], p8.Body},
+                        {expression.Parameters[8], p9.Body},
+                        {expression.Parameters[9], p10.Body}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression<Action> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10)
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>> expression,
+            Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10)
         {
-            return Expression.Lambda<Action>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(10)
-                        {
-                            {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
-                            {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2},
-                            {expression.Parameters[2], (p3 as Expression<Func<T3>>)?.Body ?? p3},
-                            {expression.Parameters[3], (p4 as Expression<Func<T4>>)?.Body ?? p4},
-                            {expression.Parameters[4], (p5 as Expression<Func<T5>>)?.Body ?? p5},
-                            {expression.Parameters[5], (p6 as Expression<Func<T6>>)?.Body ?? p6},
-                            {expression.Parameters[6], (p7 as Expression<Func<T7>>)?.Body ?? p7},
-                            {expression.Parameters[7], (p8 as Expression<Func<T8>>)?.Body ?? p8},
-                            {expression.Parameters[8], (p9 as Expression<Func<T9>>)?.Body ?? p9},
-                            {expression.Parameters[9], (p10 as Expression<Func<T10>>)?.Body ?? p10}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(10)
+                    {
+                        {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
+                        {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2},
+                        {expression.Parameters[2], (p3 as Expression<Func<T3>>)?.Body ?? p3},
+                        {expression.Parameters[3], (p4 as Expression<Func<T4>>)?.Body ?? p4},
+                        {expression.Parameters[4], (p5 as Expression<Func<T5>>)?.Body ?? p5},
+                        {expression.Parameters[5], (p6 as Expression<Func<T6>>)?.Body ?? p6},
+                        {expression.Parameters[6], (p7 as Expression<Func<T7>>)?.Body ?? p7},
+                        {expression.Parameters[7], (p8 as Expression<Func<T8>>)?.Body ?? p8},
+                        {expression.Parameters[8], (p9 as Expression<Func<T9>>)?.Body ?? p9},
+                        {expression.Parameters[9], (p10 as Expression<Func<T10>>)?.Body ?? p10}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression<Action> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10)
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10)
         {
-            return Expression.Lambda<Action>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(10)
-                        {
-                            {expression.Parameters[0], p1.Body},
-                            {expression.Parameters[1], p2.Body},
-                            {expression.Parameters[2], p3.Body},
-                            {expression.Parameters[3], p4.Body},
-                            {expression.Parameters[4], p5.Body},
-                            {expression.Parameters[5], p6.Body},
-                            {expression.Parameters[6], p7.Body},
-                            {expression.Parameters[7], p8.Body},
-                            {expression.Parameters[8], p9.Body},
-                            {expression.Parameters[9], p10.Body}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(10)
+                    {
+                        {expression.Parameters[0], p1.Body},
+                        {expression.Parameters[1], p2.Body},
+                        {expression.Parameters[2], p3.Body},
+                        {expression.Parameters[3], p4.Body},
+                        {expression.Parameters[4], p5.Body},
+                        {expression.Parameters[5], p6.Body},
+                        {expression.Parameters[6], p7.Body},
+                        {expression.Parameters[7], p8.Body},
+                        {expression.Parameters[8], p9.Body},
+                        {expression.Parameters[9], p10.Body}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, TResult>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10)
+        public static Expression<Func<TResult>> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, TResult>> expression,
+            Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10)
         {
-            var boundExpression = ParameterBinder10.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder10.BindParametersAndReturnBody(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10);
+            return Expression.Lambda<Func<TResult>>(boundExpression);
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, TResult>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10)
+        public static Expression<Func<TResult>> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, TResult>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10)
         {
-            var boundExpression = ParameterBinder10.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder10.BindParametersAndReturnBody(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10);
+            return Expression.Lambda<Func<TResult>>(boundExpression);
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10)
+        public static Expression<Action> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>> expression,
+            Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10)
         {
-            var boundExpression = ParameterBinder10.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder10.BindParametersAndReturnBody(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10);
+            return Expression.Lambda<Action>(boundExpression);
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10)
+        public static Expression<Action> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10)
         {
-            var boundExpression = ParameterBinder10.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder10.BindParametersAndReturnBody(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10);
+            return Expression.Lambda<Action>(boundExpression);
         }
     }
 #endregion
@@ -5027,112 +5067,116 @@ namespace ExpressionToolkit
         }
 #endregion
 
-        public static Expression<Func<TResult>> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, TResult>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11)
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, TResult>> expression,
+            Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11)
         {
-            return Expression.Lambda<Func<TResult>>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(11)
-                        {
-                            {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
-                            {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2},
-                            {expression.Parameters[2], (p3 as Expression<Func<T3>>)?.Body ?? p3},
-                            {expression.Parameters[3], (p4 as Expression<Func<T4>>)?.Body ?? p4},
-                            {expression.Parameters[4], (p5 as Expression<Func<T5>>)?.Body ?? p5},
-                            {expression.Parameters[5], (p6 as Expression<Func<T6>>)?.Body ?? p6},
-                            {expression.Parameters[6], (p7 as Expression<Func<T7>>)?.Body ?? p7},
-                            {expression.Parameters[7], (p8 as Expression<Func<T8>>)?.Body ?? p8},
-                            {expression.Parameters[8], (p9 as Expression<Func<T9>>)?.Body ?? p9},
-                            {expression.Parameters[9], (p10 as Expression<Func<T10>>)?.Body ?? p10},
-                            {expression.Parameters[10], (p11 as Expression<Func<T11>>)?.Body ?? p11}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(11)
+                    {
+                        {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
+                        {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2},
+                        {expression.Parameters[2], (p3 as Expression<Func<T3>>)?.Body ?? p3},
+                        {expression.Parameters[3], (p4 as Expression<Func<T4>>)?.Body ?? p4},
+                        {expression.Parameters[4], (p5 as Expression<Func<T5>>)?.Body ?? p5},
+                        {expression.Parameters[5], (p6 as Expression<Func<T6>>)?.Body ?? p6},
+                        {expression.Parameters[6], (p7 as Expression<Func<T7>>)?.Body ?? p7},
+                        {expression.Parameters[7], (p8 as Expression<Func<T8>>)?.Body ?? p8},
+                        {expression.Parameters[8], (p9 as Expression<Func<T9>>)?.Body ?? p9},
+                        {expression.Parameters[9], (p10 as Expression<Func<T10>>)?.Body ?? p10},
+                        {expression.Parameters[10], (p11 as Expression<Func<T11>>)?.Body ?? p11}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression<Func<TResult>> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, TResult>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11)
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, TResult>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11)
         {
-            return Expression.Lambda<Func<TResult>>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(11)
-                        {
-                            {expression.Parameters[0], p1.Body},
-                            {expression.Parameters[1], p2.Body},
-                            {expression.Parameters[2], p3.Body},
-                            {expression.Parameters[3], p4.Body},
-                            {expression.Parameters[4], p5.Body},
-                            {expression.Parameters[5], p6.Body},
-                            {expression.Parameters[6], p7.Body},
-                            {expression.Parameters[7], p8.Body},
-                            {expression.Parameters[8], p9.Body},
-                            {expression.Parameters[9], p10.Body},
-                            {expression.Parameters[10], p11.Body}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(11)
+                    {
+                        {expression.Parameters[0], p1.Body},
+                        {expression.Parameters[1], p2.Body},
+                        {expression.Parameters[2], p3.Body},
+                        {expression.Parameters[3], p4.Body},
+                        {expression.Parameters[4], p5.Body},
+                        {expression.Parameters[5], p6.Body},
+                        {expression.Parameters[6], p7.Body},
+                        {expression.Parameters[7], p8.Body},
+                        {expression.Parameters[8], p9.Body},
+                        {expression.Parameters[9], p10.Body},
+                        {expression.Parameters[10], p11.Body}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression<Action> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11)
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>> expression,
+            Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11)
         {
-            return Expression.Lambda<Action>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(11)
-                        {
-                            {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
-                            {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2},
-                            {expression.Parameters[2], (p3 as Expression<Func<T3>>)?.Body ?? p3},
-                            {expression.Parameters[3], (p4 as Expression<Func<T4>>)?.Body ?? p4},
-                            {expression.Parameters[4], (p5 as Expression<Func<T5>>)?.Body ?? p5},
-                            {expression.Parameters[5], (p6 as Expression<Func<T6>>)?.Body ?? p6},
-                            {expression.Parameters[6], (p7 as Expression<Func<T7>>)?.Body ?? p7},
-                            {expression.Parameters[7], (p8 as Expression<Func<T8>>)?.Body ?? p8},
-                            {expression.Parameters[8], (p9 as Expression<Func<T9>>)?.Body ?? p9},
-                            {expression.Parameters[9], (p10 as Expression<Func<T10>>)?.Body ?? p10},
-                            {expression.Parameters[10], (p11 as Expression<Func<T11>>)?.Body ?? p11}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(11)
+                    {
+                        {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
+                        {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2},
+                        {expression.Parameters[2], (p3 as Expression<Func<T3>>)?.Body ?? p3},
+                        {expression.Parameters[3], (p4 as Expression<Func<T4>>)?.Body ?? p4},
+                        {expression.Parameters[4], (p5 as Expression<Func<T5>>)?.Body ?? p5},
+                        {expression.Parameters[5], (p6 as Expression<Func<T6>>)?.Body ?? p6},
+                        {expression.Parameters[6], (p7 as Expression<Func<T7>>)?.Body ?? p7},
+                        {expression.Parameters[7], (p8 as Expression<Func<T8>>)?.Body ?? p8},
+                        {expression.Parameters[8], (p9 as Expression<Func<T9>>)?.Body ?? p9},
+                        {expression.Parameters[9], (p10 as Expression<Func<T10>>)?.Body ?? p10},
+                        {expression.Parameters[10], (p11 as Expression<Func<T11>>)?.Body ?? p11}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression<Action> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11)
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11)
         {
-            return Expression.Lambda<Action>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(11)
-                        {
-                            {expression.Parameters[0], p1.Body},
-                            {expression.Parameters[1], p2.Body},
-                            {expression.Parameters[2], p3.Body},
-                            {expression.Parameters[3], p4.Body},
-                            {expression.Parameters[4], p5.Body},
-                            {expression.Parameters[5], p6.Body},
-                            {expression.Parameters[6], p7.Body},
-                            {expression.Parameters[7], p8.Body},
-                            {expression.Parameters[8], p9.Body},
-                            {expression.Parameters[9], p10.Body},
-                            {expression.Parameters[10], p11.Body}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(11)
+                    {
+                        {expression.Parameters[0], p1.Body},
+                        {expression.Parameters[1], p2.Body},
+                        {expression.Parameters[2], p3.Body},
+                        {expression.Parameters[3], p4.Body},
+                        {expression.Parameters[4], p5.Body},
+                        {expression.Parameters[5], p6.Body},
+                        {expression.Parameters[6], p7.Body},
+                        {expression.Parameters[7], p8.Body},
+                        {expression.Parameters[8], p9.Body},
+                        {expression.Parameters[9], p10.Body},
+                        {expression.Parameters[10], p11.Body}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, TResult>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11)
+        public static Expression<Func<TResult>> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, TResult>> expression,
+            Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11)
         {
-            var boundExpression = ParameterBinder11.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder11.BindParametersAndReturnBody(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11);
+            return Expression.Lambda<Func<TResult>>(boundExpression);
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, TResult>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11)
+        public static Expression<Func<TResult>> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, TResult>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11)
         {
-            var boundExpression = ParameterBinder11.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder11.BindParametersAndReturnBody(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11);
+            return Expression.Lambda<Func<TResult>>(boundExpression);
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11)
+        public static Expression<Action> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>> expression,
+            Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11)
         {
-            var boundExpression = ParameterBinder11.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder11.BindParametersAndReturnBody(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11);
+            return Expression.Lambda<Action>(boundExpression);
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11)
+        public static Expression<Action> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11)
         {
-            var boundExpression = ParameterBinder11.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder11.BindParametersAndReturnBody(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11);
+            return Expression.Lambda<Action>(boundExpression);
         }
     }
 #endregion
@@ -6131,116 +6175,120 @@ namespace ExpressionToolkit
         }
 #endregion
 
-        public static Expression<Func<TResult>> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, TResult>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11, Expression p12)
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, TResult>> expression,
+            Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11, Expression p12)
         {
-            return Expression.Lambda<Func<TResult>>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(12)
-                        {
-                            {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
-                            {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2},
-                            {expression.Parameters[2], (p3 as Expression<Func<T3>>)?.Body ?? p3},
-                            {expression.Parameters[3], (p4 as Expression<Func<T4>>)?.Body ?? p4},
-                            {expression.Parameters[4], (p5 as Expression<Func<T5>>)?.Body ?? p5},
-                            {expression.Parameters[5], (p6 as Expression<Func<T6>>)?.Body ?? p6},
-                            {expression.Parameters[6], (p7 as Expression<Func<T7>>)?.Body ?? p7},
-                            {expression.Parameters[7], (p8 as Expression<Func<T8>>)?.Body ?? p8},
-                            {expression.Parameters[8], (p9 as Expression<Func<T9>>)?.Body ?? p9},
-                            {expression.Parameters[9], (p10 as Expression<Func<T10>>)?.Body ?? p10},
-                            {expression.Parameters[10], (p11 as Expression<Func<T11>>)?.Body ?? p11},
-                            {expression.Parameters[11], (p12 as Expression<Func<T12>>)?.Body ?? p12}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(12)
+                    {
+                        {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
+                        {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2},
+                        {expression.Parameters[2], (p3 as Expression<Func<T3>>)?.Body ?? p3},
+                        {expression.Parameters[3], (p4 as Expression<Func<T4>>)?.Body ?? p4},
+                        {expression.Parameters[4], (p5 as Expression<Func<T5>>)?.Body ?? p5},
+                        {expression.Parameters[5], (p6 as Expression<Func<T6>>)?.Body ?? p6},
+                        {expression.Parameters[6], (p7 as Expression<Func<T7>>)?.Body ?? p7},
+                        {expression.Parameters[7], (p8 as Expression<Func<T8>>)?.Body ?? p8},
+                        {expression.Parameters[8], (p9 as Expression<Func<T9>>)?.Body ?? p9},
+                        {expression.Parameters[9], (p10 as Expression<Func<T10>>)?.Body ?? p10},
+                        {expression.Parameters[10], (p11 as Expression<Func<T11>>)?.Body ?? p11},
+                        {expression.Parameters[11], (p12 as Expression<Func<T12>>)?.Body ?? p12}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression<Func<TResult>> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, TResult>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11, Expression<Func<T12>> p12)
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, TResult>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11, Expression<Func<T12>> p12)
         {
-            return Expression.Lambda<Func<TResult>>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(12)
-                        {
-                            {expression.Parameters[0], p1.Body},
-                            {expression.Parameters[1], p2.Body},
-                            {expression.Parameters[2], p3.Body},
-                            {expression.Parameters[3], p4.Body},
-                            {expression.Parameters[4], p5.Body},
-                            {expression.Parameters[5], p6.Body},
-                            {expression.Parameters[6], p7.Body},
-                            {expression.Parameters[7], p8.Body},
-                            {expression.Parameters[8], p9.Body},
-                            {expression.Parameters[9], p10.Body},
-                            {expression.Parameters[10], p11.Body},
-                            {expression.Parameters[11], p12.Body}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(12)
+                    {
+                        {expression.Parameters[0], p1.Body},
+                        {expression.Parameters[1], p2.Body},
+                        {expression.Parameters[2], p3.Body},
+                        {expression.Parameters[3], p4.Body},
+                        {expression.Parameters[4], p5.Body},
+                        {expression.Parameters[5], p6.Body},
+                        {expression.Parameters[6], p7.Body},
+                        {expression.Parameters[7], p8.Body},
+                        {expression.Parameters[8], p9.Body},
+                        {expression.Parameters[9], p10.Body},
+                        {expression.Parameters[10], p11.Body},
+                        {expression.Parameters[11], p12.Body}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression<Action> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11, Expression p12)
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>> expression,
+            Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11, Expression p12)
         {
-            return Expression.Lambda<Action>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(12)
-                        {
-                            {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
-                            {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2},
-                            {expression.Parameters[2], (p3 as Expression<Func<T3>>)?.Body ?? p3},
-                            {expression.Parameters[3], (p4 as Expression<Func<T4>>)?.Body ?? p4},
-                            {expression.Parameters[4], (p5 as Expression<Func<T5>>)?.Body ?? p5},
-                            {expression.Parameters[5], (p6 as Expression<Func<T6>>)?.Body ?? p6},
-                            {expression.Parameters[6], (p7 as Expression<Func<T7>>)?.Body ?? p7},
-                            {expression.Parameters[7], (p8 as Expression<Func<T8>>)?.Body ?? p8},
-                            {expression.Parameters[8], (p9 as Expression<Func<T9>>)?.Body ?? p9},
-                            {expression.Parameters[9], (p10 as Expression<Func<T10>>)?.Body ?? p10},
-                            {expression.Parameters[10], (p11 as Expression<Func<T11>>)?.Body ?? p11},
-                            {expression.Parameters[11], (p12 as Expression<Func<T12>>)?.Body ?? p12}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(12)
+                    {
+                        {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
+                        {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2},
+                        {expression.Parameters[2], (p3 as Expression<Func<T3>>)?.Body ?? p3},
+                        {expression.Parameters[3], (p4 as Expression<Func<T4>>)?.Body ?? p4},
+                        {expression.Parameters[4], (p5 as Expression<Func<T5>>)?.Body ?? p5},
+                        {expression.Parameters[5], (p6 as Expression<Func<T6>>)?.Body ?? p6},
+                        {expression.Parameters[6], (p7 as Expression<Func<T7>>)?.Body ?? p7},
+                        {expression.Parameters[7], (p8 as Expression<Func<T8>>)?.Body ?? p8},
+                        {expression.Parameters[8], (p9 as Expression<Func<T9>>)?.Body ?? p9},
+                        {expression.Parameters[9], (p10 as Expression<Func<T10>>)?.Body ?? p10},
+                        {expression.Parameters[10], (p11 as Expression<Func<T11>>)?.Body ?? p11},
+                        {expression.Parameters[11], (p12 as Expression<Func<T12>>)?.Body ?? p12}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression<Action> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11, Expression<Func<T12>> p12)
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11, Expression<Func<T12>> p12)
         {
-            return Expression.Lambda<Action>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(12)
-                        {
-                            {expression.Parameters[0], p1.Body},
-                            {expression.Parameters[1], p2.Body},
-                            {expression.Parameters[2], p3.Body},
-                            {expression.Parameters[3], p4.Body},
-                            {expression.Parameters[4], p5.Body},
-                            {expression.Parameters[5], p6.Body},
-                            {expression.Parameters[6], p7.Body},
-                            {expression.Parameters[7], p8.Body},
-                            {expression.Parameters[8], p9.Body},
-                            {expression.Parameters[9], p10.Body},
-                            {expression.Parameters[10], p11.Body},
-                            {expression.Parameters[11], p12.Body}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(12)
+                    {
+                        {expression.Parameters[0], p1.Body},
+                        {expression.Parameters[1], p2.Body},
+                        {expression.Parameters[2], p3.Body},
+                        {expression.Parameters[3], p4.Body},
+                        {expression.Parameters[4], p5.Body},
+                        {expression.Parameters[5], p6.Body},
+                        {expression.Parameters[6], p7.Body},
+                        {expression.Parameters[7], p8.Body},
+                        {expression.Parameters[8], p9.Body},
+                        {expression.Parameters[9], p10.Body},
+                        {expression.Parameters[10], p11.Body},
+                        {expression.Parameters[11], p12.Body}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, TResult>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11, Expression p12)
+        public static Expression<Func<TResult>> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, TResult>> expression,
+            Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11, Expression p12)
         {
-            var boundExpression = ParameterBinder12.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder12.BindParametersAndReturnBody(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12);
+            return Expression.Lambda<Func<TResult>>(boundExpression);
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, TResult>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11, Expression<Func<T12>> p12)
+        public static Expression<Func<TResult>> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, TResult>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11, Expression<Func<T12>> p12)
         {
-            var boundExpression = ParameterBinder12.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder12.BindParametersAndReturnBody(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12);
+            return Expression.Lambda<Func<TResult>>(boundExpression);
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11, Expression p12)
+        public static Expression<Action> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>> expression,
+            Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11, Expression p12)
         {
-            var boundExpression = ParameterBinder12.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder12.BindParametersAndReturnBody(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12);
+            return Expression.Lambda<Action>(boundExpression);
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11, Expression<Func<T12>> p12)
+        public static Expression<Action> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11, Expression<Func<T12>> p12)
         {
-            var boundExpression = ParameterBinder12.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder12.BindParametersAndReturnBody(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12);
+            return Expression.Lambda<Action>(boundExpression);
         }
     }
 #endregion
@@ -7377,120 +7425,124 @@ namespace ExpressionToolkit
         }
 #endregion
 
-        public static Expression<Func<TResult>> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, TResult>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11, Expression p12, Expression p13)
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, TResult>> expression,
+            Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11, Expression p12, Expression p13)
         {
-            return Expression.Lambda<Func<TResult>>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(13)
-                        {
-                            {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
-                            {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2},
-                            {expression.Parameters[2], (p3 as Expression<Func<T3>>)?.Body ?? p3},
-                            {expression.Parameters[3], (p4 as Expression<Func<T4>>)?.Body ?? p4},
-                            {expression.Parameters[4], (p5 as Expression<Func<T5>>)?.Body ?? p5},
-                            {expression.Parameters[5], (p6 as Expression<Func<T6>>)?.Body ?? p6},
-                            {expression.Parameters[6], (p7 as Expression<Func<T7>>)?.Body ?? p7},
-                            {expression.Parameters[7], (p8 as Expression<Func<T8>>)?.Body ?? p8},
-                            {expression.Parameters[8], (p9 as Expression<Func<T9>>)?.Body ?? p9},
-                            {expression.Parameters[9], (p10 as Expression<Func<T10>>)?.Body ?? p10},
-                            {expression.Parameters[10], (p11 as Expression<Func<T11>>)?.Body ?? p11},
-                            {expression.Parameters[11], (p12 as Expression<Func<T12>>)?.Body ?? p12},
-                            {expression.Parameters[12], (p13 as Expression<Func<T13>>)?.Body ?? p13}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(13)
+                    {
+                        {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
+                        {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2},
+                        {expression.Parameters[2], (p3 as Expression<Func<T3>>)?.Body ?? p3},
+                        {expression.Parameters[3], (p4 as Expression<Func<T4>>)?.Body ?? p4},
+                        {expression.Parameters[4], (p5 as Expression<Func<T5>>)?.Body ?? p5},
+                        {expression.Parameters[5], (p6 as Expression<Func<T6>>)?.Body ?? p6},
+                        {expression.Parameters[6], (p7 as Expression<Func<T7>>)?.Body ?? p7},
+                        {expression.Parameters[7], (p8 as Expression<Func<T8>>)?.Body ?? p8},
+                        {expression.Parameters[8], (p9 as Expression<Func<T9>>)?.Body ?? p9},
+                        {expression.Parameters[9], (p10 as Expression<Func<T10>>)?.Body ?? p10},
+                        {expression.Parameters[10], (p11 as Expression<Func<T11>>)?.Body ?? p11},
+                        {expression.Parameters[11], (p12 as Expression<Func<T12>>)?.Body ?? p12},
+                        {expression.Parameters[12], (p13 as Expression<Func<T13>>)?.Body ?? p13}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression<Func<TResult>> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, TResult>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11, Expression<Func<T12>> p12, Expression<Func<T13>> p13)
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, TResult>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11, Expression<Func<T12>> p12, Expression<Func<T13>> p13)
         {
-            return Expression.Lambda<Func<TResult>>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(13)
-                        {
-                            {expression.Parameters[0], p1.Body},
-                            {expression.Parameters[1], p2.Body},
-                            {expression.Parameters[2], p3.Body},
-                            {expression.Parameters[3], p4.Body},
-                            {expression.Parameters[4], p5.Body},
-                            {expression.Parameters[5], p6.Body},
-                            {expression.Parameters[6], p7.Body},
-                            {expression.Parameters[7], p8.Body},
-                            {expression.Parameters[8], p9.Body},
-                            {expression.Parameters[9], p10.Body},
-                            {expression.Parameters[10], p11.Body},
-                            {expression.Parameters[11], p12.Body},
-                            {expression.Parameters[12], p13.Body}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(13)
+                    {
+                        {expression.Parameters[0], p1.Body},
+                        {expression.Parameters[1], p2.Body},
+                        {expression.Parameters[2], p3.Body},
+                        {expression.Parameters[3], p4.Body},
+                        {expression.Parameters[4], p5.Body},
+                        {expression.Parameters[5], p6.Body},
+                        {expression.Parameters[6], p7.Body},
+                        {expression.Parameters[7], p8.Body},
+                        {expression.Parameters[8], p9.Body},
+                        {expression.Parameters[9], p10.Body},
+                        {expression.Parameters[10], p11.Body},
+                        {expression.Parameters[11], p12.Body},
+                        {expression.Parameters[12], p13.Body}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression<Action> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11, Expression p12, Expression p13)
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>> expression,
+            Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11, Expression p12, Expression p13)
         {
-            return Expression.Lambda<Action>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(13)
-                        {
-                            {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
-                            {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2},
-                            {expression.Parameters[2], (p3 as Expression<Func<T3>>)?.Body ?? p3},
-                            {expression.Parameters[3], (p4 as Expression<Func<T4>>)?.Body ?? p4},
-                            {expression.Parameters[4], (p5 as Expression<Func<T5>>)?.Body ?? p5},
-                            {expression.Parameters[5], (p6 as Expression<Func<T6>>)?.Body ?? p6},
-                            {expression.Parameters[6], (p7 as Expression<Func<T7>>)?.Body ?? p7},
-                            {expression.Parameters[7], (p8 as Expression<Func<T8>>)?.Body ?? p8},
-                            {expression.Parameters[8], (p9 as Expression<Func<T9>>)?.Body ?? p9},
-                            {expression.Parameters[9], (p10 as Expression<Func<T10>>)?.Body ?? p10},
-                            {expression.Parameters[10], (p11 as Expression<Func<T11>>)?.Body ?? p11},
-                            {expression.Parameters[11], (p12 as Expression<Func<T12>>)?.Body ?? p12},
-                            {expression.Parameters[12], (p13 as Expression<Func<T13>>)?.Body ?? p13}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(13)
+                    {
+                        {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
+                        {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2},
+                        {expression.Parameters[2], (p3 as Expression<Func<T3>>)?.Body ?? p3},
+                        {expression.Parameters[3], (p4 as Expression<Func<T4>>)?.Body ?? p4},
+                        {expression.Parameters[4], (p5 as Expression<Func<T5>>)?.Body ?? p5},
+                        {expression.Parameters[5], (p6 as Expression<Func<T6>>)?.Body ?? p6},
+                        {expression.Parameters[6], (p7 as Expression<Func<T7>>)?.Body ?? p7},
+                        {expression.Parameters[7], (p8 as Expression<Func<T8>>)?.Body ?? p8},
+                        {expression.Parameters[8], (p9 as Expression<Func<T9>>)?.Body ?? p9},
+                        {expression.Parameters[9], (p10 as Expression<Func<T10>>)?.Body ?? p10},
+                        {expression.Parameters[10], (p11 as Expression<Func<T11>>)?.Body ?? p11},
+                        {expression.Parameters[11], (p12 as Expression<Func<T12>>)?.Body ?? p12},
+                        {expression.Parameters[12], (p13 as Expression<Func<T13>>)?.Body ?? p13}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression<Action> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11, Expression<Func<T12>> p12, Expression<Func<T13>> p13)
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11, Expression<Func<T12>> p12, Expression<Func<T13>> p13)
         {
-            return Expression.Lambda<Action>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(13)
-                        {
-                            {expression.Parameters[0], p1.Body},
-                            {expression.Parameters[1], p2.Body},
-                            {expression.Parameters[2], p3.Body},
-                            {expression.Parameters[3], p4.Body},
-                            {expression.Parameters[4], p5.Body},
-                            {expression.Parameters[5], p6.Body},
-                            {expression.Parameters[6], p7.Body},
-                            {expression.Parameters[7], p8.Body},
-                            {expression.Parameters[8], p9.Body},
-                            {expression.Parameters[9], p10.Body},
-                            {expression.Parameters[10], p11.Body},
-                            {expression.Parameters[11], p12.Body},
-                            {expression.Parameters[12], p13.Body}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(13)
+                    {
+                        {expression.Parameters[0], p1.Body},
+                        {expression.Parameters[1], p2.Body},
+                        {expression.Parameters[2], p3.Body},
+                        {expression.Parameters[3], p4.Body},
+                        {expression.Parameters[4], p5.Body},
+                        {expression.Parameters[5], p6.Body},
+                        {expression.Parameters[6], p7.Body},
+                        {expression.Parameters[7], p8.Body},
+                        {expression.Parameters[8], p9.Body},
+                        {expression.Parameters[9], p10.Body},
+                        {expression.Parameters[10], p11.Body},
+                        {expression.Parameters[11], p12.Body},
+                        {expression.Parameters[12], p13.Body}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, TResult>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11, Expression p12, Expression p13)
+        public static Expression<Func<TResult>> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, TResult>> expression,
+            Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11, Expression p12, Expression p13)
         {
-            var boundExpression = ParameterBinder13.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder13.BindParametersAndReturnBody(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13);
+            return Expression.Lambda<Func<TResult>>(boundExpression);
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, TResult>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11, Expression<Func<T12>> p12, Expression<Func<T13>> p13)
+        public static Expression<Func<TResult>> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, TResult>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11, Expression<Func<T12>> p12, Expression<Func<T13>> p13)
         {
-            var boundExpression = ParameterBinder13.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder13.BindParametersAndReturnBody(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13);
+            return Expression.Lambda<Func<TResult>>(boundExpression);
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11, Expression p12, Expression p13)
+        public static Expression<Action> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>> expression,
+            Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11, Expression p12, Expression p13)
         {
-            var boundExpression = ParameterBinder13.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder13.BindParametersAndReturnBody(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13);
+            return Expression.Lambda<Action>(boundExpression);
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11, Expression<Func<T12>> p12, Expression<Func<T13>> p13)
+        public static Expression<Action> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11, Expression<Func<T12>> p12, Expression<Func<T13>> p13)
         {
-            var boundExpression = ParameterBinder13.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder13.BindParametersAndReturnBody(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13);
+            return Expression.Lambda<Action>(boundExpression);
         }
     }
 #endregion
@@ -8773,124 +8825,128 @@ namespace ExpressionToolkit
         }
 #endregion
 
-        public static Expression<Func<TResult>> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, TResult>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11, Expression p12, Expression p13, Expression p14)
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, TResult>> expression,
+            Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11, Expression p12, Expression p13, Expression p14)
         {
-            return Expression.Lambda<Func<TResult>>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(14)
-                        {
-                            {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
-                            {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2},
-                            {expression.Parameters[2], (p3 as Expression<Func<T3>>)?.Body ?? p3},
-                            {expression.Parameters[3], (p4 as Expression<Func<T4>>)?.Body ?? p4},
-                            {expression.Parameters[4], (p5 as Expression<Func<T5>>)?.Body ?? p5},
-                            {expression.Parameters[5], (p6 as Expression<Func<T6>>)?.Body ?? p6},
-                            {expression.Parameters[6], (p7 as Expression<Func<T7>>)?.Body ?? p7},
-                            {expression.Parameters[7], (p8 as Expression<Func<T8>>)?.Body ?? p8},
-                            {expression.Parameters[8], (p9 as Expression<Func<T9>>)?.Body ?? p9},
-                            {expression.Parameters[9], (p10 as Expression<Func<T10>>)?.Body ?? p10},
-                            {expression.Parameters[10], (p11 as Expression<Func<T11>>)?.Body ?? p11},
-                            {expression.Parameters[11], (p12 as Expression<Func<T12>>)?.Body ?? p12},
-                            {expression.Parameters[12], (p13 as Expression<Func<T13>>)?.Body ?? p13},
-                            {expression.Parameters[13], (p14 as Expression<Func<T14>>)?.Body ?? p14}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(14)
+                    {
+                        {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
+                        {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2},
+                        {expression.Parameters[2], (p3 as Expression<Func<T3>>)?.Body ?? p3},
+                        {expression.Parameters[3], (p4 as Expression<Func<T4>>)?.Body ?? p4},
+                        {expression.Parameters[4], (p5 as Expression<Func<T5>>)?.Body ?? p5},
+                        {expression.Parameters[5], (p6 as Expression<Func<T6>>)?.Body ?? p6},
+                        {expression.Parameters[6], (p7 as Expression<Func<T7>>)?.Body ?? p7},
+                        {expression.Parameters[7], (p8 as Expression<Func<T8>>)?.Body ?? p8},
+                        {expression.Parameters[8], (p9 as Expression<Func<T9>>)?.Body ?? p9},
+                        {expression.Parameters[9], (p10 as Expression<Func<T10>>)?.Body ?? p10},
+                        {expression.Parameters[10], (p11 as Expression<Func<T11>>)?.Body ?? p11},
+                        {expression.Parameters[11], (p12 as Expression<Func<T12>>)?.Body ?? p12},
+                        {expression.Parameters[12], (p13 as Expression<Func<T13>>)?.Body ?? p13},
+                        {expression.Parameters[13], (p14 as Expression<Func<T14>>)?.Body ?? p14}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression<Func<TResult>> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, TResult>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11, Expression<Func<T12>> p12, Expression<Func<T13>> p13, Expression<Func<T14>> p14)
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, TResult>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11, Expression<Func<T12>> p12, Expression<Func<T13>> p13, Expression<Func<T14>> p14)
         {
-            return Expression.Lambda<Func<TResult>>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(14)
-                        {
-                            {expression.Parameters[0], p1.Body},
-                            {expression.Parameters[1], p2.Body},
-                            {expression.Parameters[2], p3.Body},
-                            {expression.Parameters[3], p4.Body},
-                            {expression.Parameters[4], p5.Body},
-                            {expression.Parameters[5], p6.Body},
-                            {expression.Parameters[6], p7.Body},
-                            {expression.Parameters[7], p8.Body},
-                            {expression.Parameters[8], p9.Body},
-                            {expression.Parameters[9], p10.Body},
-                            {expression.Parameters[10], p11.Body},
-                            {expression.Parameters[11], p12.Body},
-                            {expression.Parameters[12], p13.Body},
-                            {expression.Parameters[13], p14.Body}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(14)
+                    {
+                        {expression.Parameters[0], p1.Body},
+                        {expression.Parameters[1], p2.Body},
+                        {expression.Parameters[2], p3.Body},
+                        {expression.Parameters[3], p4.Body},
+                        {expression.Parameters[4], p5.Body},
+                        {expression.Parameters[5], p6.Body},
+                        {expression.Parameters[6], p7.Body},
+                        {expression.Parameters[7], p8.Body},
+                        {expression.Parameters[8], p9.Body},
+                        {expression.Parameters[9], p10.Body},
+                        {expression.Parameters[10], p11.Body},
+                        {expression.Parameters[11], p12.Body},
+                        {expression.Parameters[12], p13.Body},
+                        {expression.Parameters[13], p14.Body}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression<Action> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11, Expression p12, Expression p13, Expression p14)
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>> expression,
+            Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11, Expression p12, Expression p13, Expression p14)
         {
-            return Expression.Lambda<Action>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(14)
-                        {
-                            {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
-                            {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2},
-                            {expression.Parameters[2], (p3 as Expression<Func<T3>>)?.Body ?? p3},
-                            {expression.Parameters[3], (p4 as Expression<Func<T4>>)?.Body ?? p4},
-                            {expression.Parameters[4], (p5 as Expression<Func<T5>>)?.Body ?? p5},
-                            {expression.Parameters[5], (p6 as Expression<Func<T6>>)?.Body ?? p6},
-                            {expression.Parameters[6], (p7 as Expression<Func<T7>>)?.Body ?? p7},
-                            {expression.Parameters[7], (p8 as Expression<Func<T8>>)?.Body ?? p8},
-                            {expression.Parameters[8], (p9 as Expression<Func<T9>>)?.Body ?? p9},
-                            {expression.Parameters[9], (p10 as Expression<Func<T10>>)?.Body ?? p10},
-                            {expression.Parameters[10], (p11 as Expression<Func<T11>>)?.Body ?? p11},
-                            {expression.Parameters[11], (p12 as Expression<Func<T12>>)?.Body ?? p12},
-                            {expression.Parameters[12], (p13 as Expression<Func<T13>>)?.Body ?? p13},
-                            {expression.Parameters[13], (p14 as Expression<Func<T14>>)?.Body ?? p14}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(14)
+                    {
+                        {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
+                        {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2},
+                        {expression.Parameters[2], (p3 as Expression<Func<T3>>)?.Body ?? p3},
+                        {expression.Parameters[3], (p4 as Expression<Func<T4>>)?.Body ?? p4},
+                        {expression.Parameters[4], (p5 as Expression<Func<T5>>)?.Body ?? p5},
+                        {expression.Parameters[5], (p6 as Expression<Func<T6>>)?.Body ?? p6},
+                        {expression.Parameters[6], (p7 as Expression<Func<T7>>)?.Body ?? p7},
+                        {expression.Parameters[7], (p8 as Expression<Func<T8>>)?.Body ?? p8},
+                        {expression.Parameters[8], (p9 as Expression<Func<T9>>)?.Body ?? p9},
+                        {expression.Parameters[9], (p10 as Expression<Func<T10>>)?.Body ?? p10},
+                        {expression.Parameters[10], (p11 as Expression<Func<T11>>)?.Body ?? p11},
+                        {expression.Parameters[11], (p12 as Expression<Func<T12>>)?.Body ?? p12},
+                        {expression.Parameters[12], (p13 as Expression<Func<T13>>)?.Body ?? p13},
+                        {expression.Parameters[13], (p14 as Expression<Func<T14>>)?.Body ?? p14}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression<Action> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11, Expression<Func<T12>> p12, Expression<Func<T13>> p13, Expression<Func<T14>> p14)
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11, Expression<Func<T12>> p12, Expression<Func<T13>> p13, Expression<Func<T14>> p14)
         {
-            return Expression.Lambda<Action>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(14)
-                        {
-                            {expression.Parameters[0], p1.Body},
-                            {expression.Parameters[1], p2.Body},
-                            {expression.Parameters[2], p3.Body},
-                            {expression.Parameters[3], p4.Body},
-                            {expression.Parameters[4], p5.Body},
-                            {expression.Parameters[5], p6.Body},
-                            {expression.Parameters[6], p7.Body},
-                            {expression.Parameters[7], p8.Body},
-                            {expression.Parameters[8], p9.Body},
-                            {expression.Parameters[9], p10.Body},
-                            {expression.Parameters[10], p11.Body},
-                            {expression.Parameters[11], p12.Body},
-                            {expression.Parameters[12], p13.Body},
-                            {expression.Parameters[13], p14.Body}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(14)
+                    {
+                        {expression.Parameters[0], p1.Body},
+                        {expression.Parameters[1], p2.Body},
+                        {expression.Parameters[2], p3.Body},
+                        {expression.Parameters[3], p4.Body},
+                        {expression.Parameters[4], p5.Body},
+                        {expression.Parameters[5], p6.Body},
+                        {expression.Parameters[6], p7.Body},
+                        {expression.Parameters[7], p8.Body},
+                        {expression.Parameters[8], p9.Body},
+                        {expression.Parameters[9], p10.Body},
+                        {expression.Parameters[10], p11.Body},
+                        {expression.Parameters[11], p12.Body},
+                        {expression.Parameters[12], p13.Body},
+                        {expression.Parameters[13], p14.Body}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, TResult>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11, Expression p12, Expression p13, Expression p14)
+        public static Expression<Func<TResult>> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, TResult>> expression,
+            Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11, Expression p12, Expression p13, Expression p14)
         {
-            var boundExpression = ParameterBinder14.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder14.BindParametersAndReturnBody(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14);
+            return Expression.Lambda<Func<TResult>>(boundExpression);
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, TResult>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11, Expression<Func<T12>> p12, Expression<Func<T13>> p13, Expression<Func<T14>> p14)
+        public static Expression<Func<TResult>> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, TResult>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11, Expression<Func<T12>> p12, Expression<Func<T13>> p13, Expression<Func<T14>> p14)
         {
-            var boundExpression = ParameterBinder14.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder14.BindParametersAndReturnBody(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14);
+            return Expression.Lambda<Func<TResult>>(boundExpression);
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11, Expression p12, Expression p13, Expression p14)
+        public static Expression<Action> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>> expression,
+            Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11, Expression p12, Expression p13, Expression p14)
         {
-            var boundExpression = ParameterBinder14.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder14.BindParametersAndReturnBody(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14);
+            return Expression.Lambda<Action>(boundExpression);
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11, Expression<Func<T12>> p12, Expression<Func<T13>> p13, Expression<Func<T14>> p14)
+        public static Expression<Action> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11, Expression<Func<T12>> p12, Expression<Func<T13>> p13, Expression<Func<T14>> p14)
         {
-            var boundExpression = ParameterBinder14.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder14.BindParametersAndReturnBody(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14);
+            return Expression.Lambda<Action>(boundExpression);
         }
     }
 #endregion
@@ -10327,128 +10383,132 @@ namespace ExpressionToolkit
         }
 #endregion
 
-        public static Expression<Func<TResult>> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, TResult>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11, Expression p12, Expression p13, Expression p14, Expression p15)
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, TResult>> expression,
+            Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11, Expression p12, Expression p13, Expression p14, Expression p15)
         {
-            return Expression.Lambda<Func<TResult>>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(15)
-                        {
-                            {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
-                            {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2},
-                            {expression.Parameters[2], (p3 as Expression<Func<T3>>)?.Body ?? p3},
-                            {expression.Parameters[3], (p4 as Expression<Func<T4>>)?.Body ?? p4},
-                            {expression.Parameters[4], (p5 as Expression<Func<T5>>)?.Body ?? p5},
-                            {expression.Parameters[5], (p6 as Expression<Func<T6>>)?.Body ?? p6},
-                            {expression.Parameters[6], (p7 as Expression<Func<T7>>)?.Body ?? p7},
-                            {expression.Parameters[7], (p8 as Expression<Func<T8>>)?.Body ?? p8},
-                            {expression.Parameters[8], (p9 as Expression<Func<T9>>)?.Body ?? p9},
-                            {expression.Parameters[9], (p10 as Expression<Func<T10>>)?.Body ?? p10},
-                            {expression.Parameters[10], (p11 as Expression<Func<T11>>)?.Body ?? p11},
-                            {expression.Parameters[11], (p12 as Expression<Func<T12>>)?.Body ?? p12},
-                            {expression.Parameters[12], (p13 as Expression<Func<T13>>)?.Body ?? p13},
-                            {expression.Parameters[13], (p14 as Expression<Func<T14>>)?.Body ?? p14},
-                            {expression.Parameters[14], (p15 as Expression<Func<T15>>)?.Body ?? p15}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(15)
+                    {
+                        {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
+                        {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2},
+                        {expression.Parameters[2], (p3 as Expression<Func<T3>>)?.Body ?? p3},
+                        {expression.Parameters[3], (p4 as Expression<Func<T4>>)?.Body ?? p4},
+                        {expression.Parameters[4], (p5 as Expression<Func<T5>>)?.Body ?? p5},
+                        {expression.Parameters[5], (p6 as Expression<Func<T6>>)?.Body ?? p6},
+                        {expression.Parameters[6], (p7 as Expression<Func<T7>>)?.Body ?? p7},
+                        {expression.Parameters[7], (p8 as Expression<Func<T8>>)?.Body ?? p8},
+                        {expression.Parameters[8], (p9 as Expression<Func<T9>>)?.Body ?? p9},
+                        {expression.Parameters[9], (p10 as Expression<Func<T10>>)?.Body ?? p10},
+                        {expression.Parameters[10], (p11 as Expression<Func<T11>>)?.Body ?? p11},
+                        {expression.Parameters[11], (p12 as Expression<Func<T12>>)?.Body ?? p12},
+                        {expression.Parameters[12], (p13 as Expression<Func<T13>>)?.Body ?? p13},
+                        {expression.Parameters[13], (p14 as Expression<Func<T14>>)?.Body ?? p14},
+                        {expression.Parameters[14], (p15 as Expression<Func<T15>>)?.Body ?? p15}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression<Func<TResult>> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, TResult>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11, Expression<Func<T12>> p12, Expression<Func<T13>> p13, Expression<Func<T14>> p14, Expression<Func<T15>> p15)
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, TResult>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11, Expression<Func<T12>> p12, Expression<Func<T13>> p13, Expression<Func<T14>> p14, Expression<Func<T15>> p15)
         {
-            return Expression.Lambda<Func<TResult>>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(15)
-                        {
-                            {expression.Parameters[0], p1.Body},
-                            {expression.Parameters[1], p2.Body},
-                            {expression.Parameters[2], p3.Body},
-                            {expression.Parameters[3], p4.Body},
-                            {expression.Parameters[4], p5.Body},
-                            {expression.Parameters[5], p6.Body},
-                            {expression.Parameters[6], p7.Body},
-                            {expression.Parameters[7], p8.Body},
-                            {expression.Parameters[8], p9.Body},
-                            {expression.Parameters[9], p10.Body},
-                            {expression.Parameters[10], p11.Body},
-                            {expression.Parameters[11], p12.Body},
-                            {expression.Parameters[12], p13.Body},
-                            {expression.Parameters[13], p14.Body},
-                            {expression.Parameters[14], p15.Body}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(15)
+                    {
+                        {expression.Parameters[0], p1.Body},
+                        {expression.Parameters[1], p2.Body},
+                        {expression.Parameters[2], p3.Body},
+                        {expression.Parameters[3], p4.Body},
+                        {expression.Parameters[4], p5.Body},
+                        {expression.Parameters[5], p6.Body},
+                        {expression.Parameters[6], p7.Body},
+                        {expression.Parameters[7], p8.Body},
+                        {expression.Parameters[8], p9.Body},
+                        {expression.Parameters[9], p10.Body},
+                        {expression.Parameters[10], p11.Body},
+                        {expression.Parameters[11], p12.Body},
+                        {expression.Parameters[12], p13.Body},
+                        {expression.Parameters[13], p14.Body},
+                        {expression.Parameters[14], p15.Body}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression<Action> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11, Expression p12, Expression p13, Expression p14, Expression p15)
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>> expression,
+            Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11, Expression p12, Expression p13, Expression p14, Expression p15)
         {
-            return Expression.Lambda<Action>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(15)
-                        {
-                            {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
-                            {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2},
-                            {expression.Parameters[2], (p3 as Expression<Func<T3>>)?.Body ?? p3},
-                            {expression.Parameters[3], (p4 as Expression<Func<T4>>)?.Body ?? p4},
-                            {expression.Parameters[4], (p5 as Expression<Func<T5>>)?.Body ?? p5},
-                            {expression.Parameters[5], (p6 as Expression<Func<T6>>)?.Body ?? p6},
-                            {expression.Parameters[6], (p7 as Expression<Func<T7>>)?.Body ?? p7},
-                            {expression.Parameters[7], (p8 as Expression<Func<T8>>)?.Body ?? p8},
-                            {expression.Parameters[8], (p9 as Expression<Func<T9>>)?.Body ?? p9},
-                            {expression.Parameters[9], (p10 as Expression<Func<T10>>)?.Body ?? p10},
-                            {expression.Parameters[10], (p11 as Expression<Func<T11>>)?.Body ?? p11},
-                            {expression.Parameters[11], (p12 as Expression<Func<T12>>)?.Body ?? p12},
-                            {expression.Parameters[12], (p13 as Expression<Func<T13>>)?.Body ?? p13},
-                            {expression.Parameters[13], (p14 as Expression<Func<T14>>)?.Body ?? p14},
-                            {expression.Parameters[14], (p15 as Expression<Func<T15>>)?.Body ?? p15}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(15)
+                    {
+                        {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
+                        {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2},
+                        {expression.Parameters[2], (p3 as Expression<Func<T3>>)?.Body ?? p3},
+                        {expression.Parameters[3], (p4 as Expression<Func<T4>>)?.Body ?? p4},
+                        {expression.Parameters[4], (p5 as Expression<Func<T5>>)?.Body ?? p5},
+                        {expression.Parameters[5], (p6 as Expression<Func<T6>>)?.Body ?? p6},
+                        {expression.Parameters[6], (p7 as Expression<Func<T7>>)?.Body ?? p7},
+                        {expression.Parameters[7], (p8 as Expression<Func<T8>>)?.Body ?? p8},
+                        {expression.Parameters[8], (p9 as Expression<Func<T9>>)?.Body ?? p9},
+                        {expression.Parameters[9], (p10 as Expression<Func<T10>>)?.Body ?? p10},
+                        {expression.Parameters[10], (p11 as Expression<Func<T11>>)?.Body ?? p11},
+                        {expression.Parameters[11], (p12 as Expression<Func<T12>>)?.Body ?? p12},
+                        {expression.Parameters[12], (p13 as Expression<Func<T13>>)?.Body ?? p13},
+                        {expression.Parameters[13], (p14 as Expression<Func<T14>>)?.Body ?? p14},
+                        {expression.Parameters[14], (p15 as Expression<Func<T15>>)?.Body ?? p15}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression<Action> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11, Expression<Func<T12>> p12, Expression<Func<T13>> p13, Expression<Func<T14>> p14, Expression<Func<T15>> p15)
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11, Expression<Func<T12>> p12, Expression<Func<T13>> p13, Expression<Func<T14>> p14, Expression<Func<T15>> p15)
         {
-            return Expression.Lambda<Action>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(15)
-                        {
-                            {expression.Parameters[0], p1.Body},
-                            {expression.Parameters[1], p2.Body},
-                            {expression.Parameters[2], p3.Body},
-                            {expression.Parameters[3], p4.Body},
-                            {expression.Parameters[4], p5.Body},
-                            {expression.Parameters[5], p6.Body},
-                            {expression.Parameters[6], p7.Body},
-                            {expression.Parameters[7], p8.Body},
-                            {expression.Parameters[8], p9.Body},
-                            {expression.Parameters[9], p10.Body},
-                            {expression.Parameters[10], p11.Body},
-                            {expression.Parameters[11], p12.Body},
-                            {expression.Parameters[12], p13.Body},
-                            {expression.Parameters[13], p14.Body},
-                            {expression.Parameters[14], p15.Body}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(15)
+                    {
+                        {expression.Parameters[0], p1.Body},
+                        {expression.Parameters[1], p2.Body},
+                        {expression.Parameters[2], p3.Body},
+                        {expression.Parameters[3], p4.Body},
+                        {expression.Parameters[4], p5.Body},
+                        {expression.Parameters[5], p6.Body},
+                        {expression.Parameters[6], p7.Body},
+                        {expression.Parameters[7], p8.Body},
+                        {expression.Parameters[8], p9.Body},
+                        {expression.Parameters[9], p10.Body},
+                        {expression.Parameters[10], p11.Body},
+                        {expression.Parameters[11], p12.Body},
+                        {expression.Parameters[12], p13.Body},
+                        {expression.Parameters[13], p14.Body},
+                        {expression.Parameters[14], p15.Body}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, TResult>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11, Expression p12, Expression p13, Expression p14, Expression p15)
+        public static Expression<Func<TResult>> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, TResult>> expression,
+            Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11, Expression p12, Expression p13, Expression p14, Expression p15)
         {
-            var boundExpression = ParameterBinder15.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder15.BindParametersAndReturnBody(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15);
+            return Expression.Lambda<Func<TResult>>(boundExpression);
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, TResult>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11, Expression<Func<T12>> p12, Expression<Func<T13>> p13, Expression<Func<T14>> p14, Expression<Func<T15>> p15)
+        public static Expression<Func<TResult>> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, TResult>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11, Expression<Func<T12>> p12, Expression<Func<T13>> p13, Expression<Func<T14>> p14, Expression<Func<T15>> p15)
         {
-            var boundExpression = ParameterBinder15.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder15.BindParametersAndReturnBody(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15);
+            return Expression.Lambda<Func<TResult>>(boundExpression);
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11, Expression p12, Expression p13, Expression p14, Expression p15)
+        public static Expression<Action> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>> expression,
+            Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11, Expression p12, Expression p13, Expression p14, Expression p15)
         {
-            var boundExpression = ParameterBinder15.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder15.BindParametersAndReturnBody(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15);
+            return Expression.Lambda<Action>(boundExpression);
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11, Expression<Func<T12>> p12, Expression<Func<T13>> p13, Expression<Func<T14>> p14, Expression<Func<T15>> p15)
+        public static Expression<Action> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11, Expression<Func<T12>> p12, Expression<Func<T13>> p13, Expression<Func<T14>> p14, Expression<Func<T15>> p15)
         {
-            var boundExpression = ParameterBinder15.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder15.BindParametersAndReturnBody(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15);
+            return Expression.Lambda<Action>(boundExpression);
         }
     }
 #endregion
@@ -12047,132 +12107,136 @@ namespace ExpressionToolkit
         }
 #endregion
 
-        public static Expression<Func<TResult>> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, TResult>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11, Expression p12, Expression p13, Expression p14, Expression p15, Expression p16)
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, TResult>> expression,
+            Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11, Expression p12, Expression p13, Expression p14, Expression p15, Expression p16)
         {
-            return Expression.Lambda<Func<TResult>>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(16)
-                        {
-                            {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
-                            {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2},
-                            {expression.Parameters[2], (p3 as Expression<Func<T3>>)?.Body ?? p3},
-                            {expression.Parameters[3], (p4 as Expression<Func<T4>>)?.Body ?? p4},
-                            {expression.Parameters[4], (p5 as Expression<Func<T5>>)?.Body ?? p5},
-                            {expression.Parameters[5], (p6 as Expression<Func<T6>>)?.Body ?? p6},
-                            {expression.Parameters[6], (p7 as Expression<Func<T7>>)?.Body ?? p7},
-                            {expression.Parameters[7], (p8 as Expression<Func<T8>>)?.Body ?? p8},
-                            {expression.Parameters[8], (p9 as Expression<Func<T9>>)?.Body ?? p9},
-                            {expression.Parameters[9], (p10 as Expression<Func<T10>>)?.Body ?? p10},
-                            {expression.Parameters[10], (p11 as Expression<Func<T11>>)?.Body ?? p11},
-                            {expression.Parameters[11], (p12 as Expression<Func<T12>>)?.Body ?? p12},
-                            {expression.Parameters[12], (p13 as Expression<Func<T13>>)?.Body ?? p13},
-                            {expression.Parameters[13], (p14 as Expression<Func<T14>>)?.Body ?? p14},
-                            {expression.Parameters[14], (p15 as Expression<Func<T15>>)?.Body ?? p15},
-                            {expression.Parameters[15], (p16 as Expression<Func<T16>>)?.Body ?? p16}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(16)
+                    {
+                        {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
+                        {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2},
+                        {expression.Parameters[2], (p3 as Expression<Func<T3>>)?.Body ?? p3},
+                        {expression.Parameters[3], (p4 as Expression<Func<T4>>)?.Body ?? p4},
+                        {expression.Parameters[4], (p5 as Expression<Func<T5>>)?.Body ?? p5},
+                        {expression.Parameters[5], (p6 as Expression<Func<T6>>)?.Body ?? p6},
+                        {expression.Parameters[6], (p7 as Expression<Func<T7>>)?.Body ?? p7},
+                        {expression.Parameters[7], (p8 as Expression<Func<T8>>)?.Body ?? p8},
+                        {expression.Parameters[8], (p9 as Expression<Func<T9>>)?.Body ?? p9},
+                        {expression.Parameters[9], (p10 as Expression<Func<T10>>)?.Body ?? p10},
+                        {expression.Parameters[10], (p11 as Expression<Func<T11>>)?.Body ?? p11},
+                        {expression.Parameters[11], (p12 as Expression<Func<T12>>)?.Body ?? p12},
+                        {expression.Parameters[12], (p13 as Expression<Func<T13>>)?.Body ?? p13},
+                        {expression.Parameters[13], (p14 as Expression<Func<T14>>)?.Body ?? p14},
+                        {expression.Parameters[14], (p15 as Expression<Func<T15>>)?.Body ?? p15},
+                        {expression.Parameters[15], (p16 as Expression<Func<T16>>)?.Body ?? p16}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression<Func<TResult>> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, TResult>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11, Expression<Func<T12>> p12, Expression<Func<T13>> p13, Expression<Func<T14>> p14, Expression<Func<T15>> p15, Expression<Func<T16>> p16)
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, TResult>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11, Expression<Func<T12>> p12, Expression<Func<T13>> p13, Expression<Func<T14>> p14, Expression<Func<T15>> p15, Expression<Func<T16>> p16)
         {
-            return Expression.Lambda<Func<TResult>>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(16)
-                        {
-                            {expression.Parameters[0], p1.Body},
-                            {expression.Parameters[1], p2.Body},
-                            {expression.Parameters[2], p3.Body},
-                            {expression.Parameters[3], p4.Body},
-                            {expression.Parameters[4], p5.Body},
-                            {expression.Parameters[5], p6.Body},
-                            {expression.Parameters[6], p7.Body},
-                            {expression.Parameters[7], p8.Body},
-                            {expression.Parameters[8], p9.Body},
-                            {expression.Parameters[9], p10.Body},
-                            {expression.Parameters[10], p11.Body},
-                            {expression.Parameters[11], p12.Body},
-                            {expression.Parameters[12], p13.Body},
-                            {expression.Parameters[13], p14.Body},
-                            {expression.Parameters[14], p15.Body},
-                            {expression.Parameters[15], p16.Body}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(16)
+                    {
+                        {expression.Parameters[0], p1.Body},
+                        {expression.Parameters[1], p2.Body},
+                        {expression.Parameters[2], p3.Body},
+                        {expression.Parameters[3], p4.Body},
+                        {expression.Parameters[4], p5.Body},
+                        {expression.Parameters[5], p6.Body},
+                        {expression.Parameters[6], p7.Body},
+                        {expression.Parameters[7], p8.Body},
+                        {expression.Parameters[8], p9.Body},
+                        {expression.Parameters[9], p10.Body},
+                        {expression.Parameters[10], p11.Body},
+                        {expression.Parameters[11], p12.Body},
+                        {expression.Parameters[12], p13.Body},
+                        {expression.Parameters[13], p14.Body},
+                        {expression.Parameters[14], p15.Body},
+                        {expression.Parameters[15], p16.Body}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression<Action> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11, Expression p12, Expression p13, Expression p14, Expression p15, Expression p16)
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>> expression,
+            Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11, Expression p12, Expression p13, Expression p14, Expression p15, Expression p16)
         {
-            return Expression.Lambda<Action>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(16)
-                        {
-                            {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
-                            {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2},
-                            {expression.Parameters[2], (p3 as Expression<Func<T3>>)?.Body ?? p3},
-                            {expression.Parameters[3], (p4 as Expression<Func<T4>>)?.Body ?? p4},
-                            {expression.Parameters[4], (p5 as Expression<Func<T5>>)?.Body ?? p5},
-                            {expression.Parameters[5], (p6 as Expression<Func<T6>>)?.Body ?? p6},
-                            {expression.Parameters[6], (p7 as Expression<Func<T7>>)?.Body ?? p7},
-                            {expression.Parameters[7], (p8 as Expression<Func<T8>>)?.Body ?? p8},
-                            {expression.Parameters[8], (p9 as Expression<Func<T9>>)?.Body ?? p9},
-                            {expression.Parameters[9], (p10 as Expression<Func<T10>>)?.Body ?? p10},
-                            {expression.Parameters[10], (p11 as Expression<Func<T11>>)?.Body ?? p11},
-                            {expression.Parameters[11], (p12 as Expression<Func<T12>>)?.Body ?? p12},
-                            {expression.Parameters[12], (p13 as Expression<Func<T13>>)?.Body ?? p13},
-                            {expression.Parameters[13], (p14 as Expression<Func<T14>>)?.Body ?? p14},
-                            {expression.Parameters[14], (p15 as Expression<Func<T15>>)?.Body ?? p15},
-                            {expression.Parameters[15], (p16 as Expression<Func<T16>>)?.Body ?? p16}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(16)
+                    {
+                        {expression.Parameters[0], (p1 as Expression<Func<T1>>)?.Body ?? p1},
+                        {expression.Parameters[1], (p2 as Expression<Func<T2>>)?.Body ?? p2},
+                        {expression.Parameters[2], (p3 as Expression<Func<T3>>)?.Body ?? p3},
+                        {expression.Parameters[3], (p4 as Expression<Func<T4>>)?.Body ?? p4},
+                        {expression.Parameters[4], (p5 as Expression<Func<T5>>)?.Body ?? p5},
+                        {expression.Parameters[5], (p6 as Expression<Func<T6>>)?.Body ?? p6},
+                        {expression.Parameters[6], (p7 as Expression<Func<T7>>)?.Body ?? p7},
+                        {expression.Parameters[7], (p8 as Expression<Func<T8>>)?.Body ?? p8},
+                        {expression.Parameters[8], (p9 as Expression<Func<T9>>)?.Body ?? p9},
+                        {expression.Parameters[9], (p10 as Expression<Func<T10>>)?.Body ?? p10},
+                        {expression.Parameters[10], (p11 as Expression<Func<T11>>)?.Body ?? p11},
+                        {expression.Parameters[11], (p12 as Expression<Func<T12>>)?.Body ?? p12},
+                        {expression.Parameters[12], (p13 as Expression<Func<T13>>)?.Body ?? p13},
+                        {expression.Parameters[13], (p14 as Expression<Func<T14>>)?.Body ?? p14},
+                        {expression.Parameters[14], (p15 as Expression<Func<T15>>)?.Body ?? p15},
+                        {expression.Parameters[15], (p16 as Expression<Func<T16>>)?.Body ?? p16}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression<Action> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11, Expression<Func<T12>> p12, Expression<Func<T13>> p13, Expression<Func<T14>> p14, Expression<Func<T15>> p15, Expression<Func<T16>> p16)
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11, Expression<Func<T12>> p12, Expression<Func<T13>> p13, Expression<Func<T14>> p14, Expression<Func<T15>> p15, Expression<Func<T16>> p16)
         {
-            return Expression.Lambda<Action>(
-                new ExpressionReplacingVisitor(
-                        new Dictionary<Expression, Expression>(16)
-                        {
-                            {expression.Parameters[0], p1.Body},
-                            {expression.Parameters[1], p2.Body},
-                            {expression.Parameters[2], p3.Body},
-                            {expression.Parameters[3], p4.Body},
-                            {expression.Parameters[4], p5.Body},
-                            {expression.Parameters[5], p6.Body},
-                            {expression.Parameters[6], p7.Body},
-                            {expression.Parameters[7], p8.Body},
-                            {expression.Parameters[8], p9.Body},
-                            {expression.Parameters[9], p10.Body},
-                            {expression.Parameters[10], p11.Body},
-                            {expression.Parameters[11], p12.Body},
-                            {expression.Parameters[12], p13.Body},
-                            {expression.Parameters[13], p14.Body},
-                            {expression.Parameters[14], p15.Body},
-                            {expression.Parameters[15], p16.Body}
-                        })
-                    .Visit(expression.Body)!);
+            return new ExpressionReplacingVisitor(
+                    new Dictionary<Expression, Expression>(16)
+                    {
+                        {expression.Parameters[0], p1.Body},
+                        {expression.Parameters[1], p2.Body},
+                        {expression.Parameters[2], p3.Body},
+                        {expression.Parameters[3], p4.Body},
+                        {expression.Parameters[4], p5.Body},
+                        {expression.Parameters[5], p6.Body},
+                        {expression.Parameters[6], p7.Body},
+                        {expression.Parameters[7], p8.Body},
+                        {expression.Parameters[8], p9.Body},
+                        {expression.Parameters[9], p10.Body},
+                        {expression.Parameters[10], p11.Body},
+                        {expression.Parameters[11], p12.Body},
+                        {expression.Parameters[12], p13.Body},
+                        {expression.Parameters[13], p14.Body},
+                        {expression.Parameters[14], p15.Body},
+                        {expression.Parameters[15], p16.Body}
+                    })
+                .Visit(expression.Body)!;
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, TResult>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11, Expression p12, Expression p13, Expression p14, Expression p15, Expression p16)
+        public static Expression<Func<TResult>> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, TResult>> expression,
+            Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11, Expression p12, Expression p13, Expression p14, Expression p15, Expression p16)
         {
-            var boundExpression = ParameterBinder16.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder16.BindParametersAndReturnBody(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16);
+            return Expression.Lambda<Func<TResult>>(boundExpression);
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, TResult>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11, Expression<Func<T12>> p12, Expression<Func<T13>> p13, Expression<Func<T14>> p14, Expression<Func<T15>> p15, Expression<Func<T16>> p16)
+        public static Expression<Func<TResult>> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, TResult>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11, Expression<Func<T12>> p12, Expression<Func<T13>> p13, Expression<Func<T14>> p14, Expression<Func<T15>> p15, Expression<Func<T16>> p16)
         {
-            var boundExpression = ParameterBinder16.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder16.BindParametersAndReturnBody(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16);
+            return Expression.Lambda<Func<TResult>>(boundExpression);
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11, Expression p12, Expression p13, Expression p14, Expression p15, Expression p16)
+        public static Expression<Action> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>> expression,
+            Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11, Expression p12, Expression p13, Expression p14, Expression p15, Expression p16)
         {
-            var boundExpression = ParameterBinder16.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder16.BindParametersAndReturnBody(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16);
+            return Expression.Lambda<Action>(boundExpression);
         }
 
-        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11, Expression<Func<T12>> p12, Expression<Func<T13>> p13, Expression<Func<T14>> p14, Expression<Func<T15>> p15, Expression<Func<T16>> p16)
+        public static Expression<Action> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>> expression,
+            Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11, Expression<Func<T12>> p12, Expression<Func<T13>> p13, Expression<Func<T14>> p14, Expression<Func<T15>> p15, Expression<Func<T16>> p16)
         {
-            var boundExpression = ParameterBinder16.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16);
-            return boundExpression.Body;
+            var boundExpression = ParameterBinder16.BindParametersAndReturnBody(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16);
+            return Expression.Lambda<Action>(boundExpression);
         }
     }
 #endregion

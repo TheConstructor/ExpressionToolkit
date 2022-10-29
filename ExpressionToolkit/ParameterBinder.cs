@@ -1,9 +1,37 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace ExpressionToolkit
 {
+    public static class ParameterBinder
+    {
+        public static Expression BindParametersAndReturnBody(LambdaExpression lambdaExpression,
+            ReadOnlyCollection<Expression> arguments)
+        {
+            if (lambdaExpression.Parameters.Count != arguments.Count)
+            {
+                throw new ArgumentOutOfRangeException(nameof(arguments),
+                    $"{nameof(lambdaExpression)} expects {lambdaExpression.Parameters.Count}, but only {arguments.Count} were provided");
+            }
+
+            if (lambdaExpression.Parameters.Count < 1)
+            {
+                return lambdaExpression.Body;
+            }
+
+            var replacements = new Dictionary<Expression, Expression>(lambdaExpression.Parameters.Count);
+            foreach (var (parameter, argument) in lambdaExpression.Parameters.Zip(arguments, (p, a) => (p, a)))
+            {
+                replacements[parameter] = argument;
+            }
+
+            return new ExpressionReplacingVisitor(replacements)
+                .Visit(lambdaExpression.Body)!;
+        }
+    }
 
 #region Action & Func having 1 parameters
     public static class ParameterBinder1

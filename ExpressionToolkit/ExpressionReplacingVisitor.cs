@@ -21,5 +21,18 @@ namespace ExpressionToolkit
             }
             return base.Visit(node);
         }
+
+        protected override Expression VisitInvocation(InvocationExpression node)
+        {
+            if (node.Expression is MethodCallExpression mce
+                && typeof(LambdaExpression).IsAssignableFrom(mce.Method.DeclaringType)
+                && mce.Method.Name == nameof(LambdaExpression.Compile)
+                && mce.Object.TryResolveValue(out var value) 
+                && value is LambdaExpression lambdaExpression)
+            {
+                return ParameterBinder.BindParametersAndReturnBody(lambdaExpression, node.Arguments);
+            }
+            return base.VisitInvocation(node);
+        }
     }
 }

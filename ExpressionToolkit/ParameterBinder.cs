@@ -52,6 +52,30 @@ namespace ExpressionToolkit
                         })
                     .Visit(expression.Body)!);
         }
+
+        public static Expression BindParametersAndReturnBody<T1, TResult>(this Expression<Func<T1, TResult>> expression, Expression p1)
+        {
+            var boundExpression = ParameterBinder1.BindParameters(expression, p1);
+            return boundExpression.Body;
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, TResult>(this Expression<Func<T1, TResult>> expression, Expression<Func<T1>> p1)
+        {
+            var boundExpression = ParameterBinder1.BindParameters(expression, p1);
+            return boundExpression.Body;
+        }
+
+        public static Expression BindParametersAndReturnBody<T1>(this Expression<Action<T1>> expression, Expression p1)
+        {
+            var boundExpression = ParameterBinder1.BindParameters(expression, p1);
+            return boundExpression.Body;
+        }
+
+        public static Expression BindParametersAndReturnBody<T1>(this Expression<Action<T1>> expression, Expression<Func<T1>> p1)
+        {
+            var boundExpression = ParameterBinder1.BindParameters(expression, p1);
+            return boundExpression.Body;
+        }
     }
 #endregion
 
@@ -155,6 +179,30 @@ namespace ExpressionToolkit
                             {expression.Parameters[1], p2.Body}
                         })
                     .Visit(expression.Body)!);
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, TResult>(this Expression<Func<T1, T2, TResult>> expression, Expression p1, Expression p2)
+        {
+            var boundExpression = ParameterBinder2.BindParameters(expression, p1, p2);
+            return boundExpression.Body;
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, TResult>(this Expression<Func<T1, T2, TResult>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2)
+        {
+            var boundExpression = ParameterBinder2.BindParameters(expression, p1, p2);
+            return boundExpression.Body;
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2>(this Expression<Action<T1, T2>> expression, Expression p1, Expression p2)
+        {
+            var boundExpression = ParameterBinder2.BindParameters(expression, p1, p2);
+            return boundExpression.Body;
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2>(this Expression<Action<T1, T2>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2)
+        {
+            var boundExpression = ParameterBinder2.BindParameters(expression, p1, p2);
+            return boundExpression.Body;
         }
     }
 #endregion
@@ -321,6 +369,30 @@ namespace ExpressionToolkit
                             {expression.Parameters[2], p3.Body}
                         })
                     .Visit(expression.Body)!);
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, TResult>(this Expression<Func<T1, T2, T3, TResult>> expression, Expression p1, Expression p2, Expression p3)
+        {
+            var boundExpression = ParameterBinder3.BindParameters(expression, p1, p2, p3);
+            return boundExpression.Body;
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, TResult>(this Expression<Func<T1, T2, T3, TResult>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3)
+        {
+            var boundExpression = ParameterBinder3.BindParameters(expression, p1, p2, p3);
+            return boundExpression.Body;
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, T3>(this Expression<Action<T1, T2, T3>> expression, Expression p1, Expression p2, Expression p3)
+        {
+            var boundExpression = ParameterBinder3.BindParameters(expression, p1, p2, p3);
+            return boundExpression.Body;
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, T3>(this Expression<Action<T1, T2, T3>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3)
+        {
+            var boundExpression = ParameterBinder3.BindParameters(expression, p1, p2, p3);
+            return boundExpression.Body;
         }
     }
 #endregion
@@ -557,6 +629,30 @@ namespace ExpressionToolkit
                             {expression.Parameters[3], p4.Body}
                         })
                     .Visit(expression.Body)!);
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, TResult>(this Expression<Func<T1, T2, T3, T4, TResult>> expression, Expression p1, Expression p2, Expression p3, Expression p4)
+        {
+            var boundExpression = ParameterBinder4.BindParameters(expression, p1, p2, p3, p4);
+            return boundExpression.Body;
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, TResult>(this Expression<Func<T1, T2, T3, T4, TResult>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4)
+        {
+            var boundExpression = ParameterBinder4.BindParameters(expression, p1, p2, p3, p4);
+            return boundExpression.Body;
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4>(this Expression<Action<T1, T2, T3, T4>> expression, Expression p1, Expression p2, Expression p3, Expression p4)
+        {
+            var boundExpression = ParameterBinder4.BindParameters(expression, p1, p2, p3, p4);
+            return boundExpression.Body;
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4>(this Expression<Action<T1, T2, T3, T4>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4)
+        {
+            var boundExpression = ParameterBinder4.BindParameters(expression, p1, p2, p3, p4);
+            return boundExpression.Body;
         }
     }
 #endregion
@@ -871,6 +967,30 @@ namespace ExpressionToolkit
                             {expression.Parameters[4], p5.Body}
                         })
                     .Visit(expression.Body)!);
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, TResult>(this Expression<Func<T1, T2, T3, T4, T5, TResult>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5)
+        {
+            var boundExpression = ParameterBinder5.BindParameters(expression, p1, p2, p3, p4, p5);
+            return boundExpression.Body;
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, TResult>(this Expression<Func<T1, T2, T3, T4, T5, TResult>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5)
+        {
+            var boundExpression = ParameterBinder5.BindParameters(expression, p1, p2, p3, p4, p5);
+            return boundExpression.Body;
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5>(this Expression<Action<T1, T2, T3, T4, T5>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5)
+        {
+            var boundExpression = ParameterBinder5.BindParameters(expression, p1, p2, p3, p4, p5);
+            return boundExpression.Body;
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5>(this Expression<Action<T1, T2, T3, T4, T5>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5)
+        {
+            var boundExpression = ParameterBinder5.BindParameters(expression, p1, p2, p3, p4, p5);
+            return boundExpression.Body;
         }
     }
 #endregion
@@ -1271,6 +1391,30 @@ namespace ExpressionToolkit
                             {expression.Parameters[5], p6.Body}
                         })
                     .Visit(expression.Body)!);
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, TResult>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6)
+        {
+            var boundExpression = ParameterBinder6.BindParameters(expression, p1, p2, p3, p4, p5, p6);
+            return boundExpression.Body;
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, TResult>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6)
+        {
+            var boundExpression = ParameterBinder6.BindParameters(expression, p1, p2, p3, p4, p5, p6);
+            return boundExpression.Body;
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6>(this Expression<Action<T1, T2, T3, T4, T5, T6>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6)
+        {
+            var boundExpression = ParameterBinder6.BindParameters(expression, p1, p2, p3, p4, p5, p6);
+            return boundExpression.Body;
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6>(this Expression<Action<T1, T2, T3, T4, T5, T6>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6)
+        {
+            var boundExpression = ParameterBinder6.BindParameters(expression, p1, p2, p3, p4, p5, p6);
+            return boundExpression.Body;
         }
     }
 #endregion
@@ -1765,6 +1909,30 @@ namespace ExpressionToolkit
                             {expression.Parameters[6], p7.Body}
                         })
                     .Visit(expression.Body)!);
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, TResult>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7)
+        {
+            var boundExpression = ParameterBinder7.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7);
+            return boundExpression.Body;
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, TResult>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7)
+        {
+            var boundExpression = ParameterBinder7.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7);
+            return boundExpression.Body;
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7)
+        {
+            var boundExpression = ParameterBinder7.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7);
+            return boundExpression.Body;
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7)
+        {
+            var boundExpression = ParameterBinder7.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7);
+            return boundExpression.Body;
         }
     }
 #endregion
@@ -2361,6 +2529,30 @@ namespace ExpressionToolkit
                             {expression.Parameters[7], p8.Body}
                         })
                     .Visit(expression.Body)!);
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, TResult>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8)
+        {
+            var boundExpression = ParameterBinder8.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8);
+            return boundExpression.Body;
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, TResult>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8)
+        {
+            var boundExpression = ParameterBinder8.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8);
+            return boundExpression.Body;
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8)
+        {
+            var boundExpression = ParameterBinder8.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8);
+            return boundExpression.Body;
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8)
+        {
+            var boundExpression = ParameterBinder8.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8);
+            return boundExpression.Body;
         }
     }
 #endregion
@@ -3067,6 +3259,30 @@ namespace ExpressionToolkit
                             {expression.Parameters[8], p9.Body}
                         })
                     .Visit(expression.Body)!);
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, TResult>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9)
+        {
+            var boundExpression = ParameterBinder9.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9);
+            return boundExpression.Body;
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, TResult>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9)
+        {
+            var boundExpression = ParameterBinder9.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9);
+            return boundExpression.Body;
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9)
+        {
+            var boundExpression = ParameterBinder9.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9);
+            return boundExpression.Body;
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9)
+        {
+            var boundExpression = ParameterBinder9.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9);
+            return boundExpression.Body;
         }
     }
 #endregion
@@ -3891,6 +4107,30 @@ namespace ExpressionToolkit
                             {expression.Parameters[9], p10.Body}
                         })
                     .Visit(expression.Body)!);
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, TResult>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10)
+        {
+            var boundExpression = ParameterBinder10.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10);
+            return boundExpression.Body;
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, TResult>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10)
+        {
+            var boundExpression = ParameterBinder10.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10);
+            return boundExpression.Body;
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10)
+        {
+            var boundExpression = ParameterBinder10.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10);
+            return boundExpression.Body;
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10)
+        {
+            var boundExpression = ParameterBinder10.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10);
+            return boundExpression.Body;
         }
     }
 #endregion
@@ -4841,6 +5081,30 @@ namespace ExpressionToolkit
                             {expression.Parameters[10], p11.Body}
                         })
                     .Visit(expression.Body)!);
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, TResult>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11)
+        {
+            var boundExpression = ParameterBinder11.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11);
+            return boundExpression.Body;
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, TResult>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11)
+        {
+            var boundExpression = ParameterBinder11.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11);
+            return boundExpression.Body;
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11)
+        {
+            var boundExpression = ParameterBinder11.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11);
+            return boundExpression.Body;
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11)
+        {
+            var boundExpression = ParameterBinder11.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11);
+            return boundExpression.Body;
         }
     }
 #endregion
@@ -5925,6 +6189,30 @@ namespace ExpressionToolkit
                             {expression.Parameters[11], p12.Body}
                         })
                     .Visit(expression.Body)!);
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, TResult>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11, Expression p12)
+        {
+            var boundExpression = ParameterBinder12.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12);
+            return boundExpression.Body;
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, TResult>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11, Expression<Func<T12>> p12)
+        {
+            var boundExpression = ParameterBinder12.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12);
+            return boundExpression.Body;
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11, Expression p12)
+        {
+            var boundExpression = ParameterBinder12.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12);
+            return boundExpression.Body;
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11, Expression<Func<T12>> p12)
+        {
+            var boundExpression = ParameterBinder12.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12);
+            return boundExpression.Body;
         }
     }
 #endregion
@@ -7151,6 +7439,30 @@ namespace ExpressionToolkit
                             {expression.Parameters[12], p13.Body}
                         })
                     .Visit(expression.Body)!);
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, TResult>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11, Expression p12, Expression p13)
+        {
+            var boundExpression = ParameterBinder13.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13);
+            return boundExpression.Body;
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, TResult>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11, Expression<Func<T12>> p12, Expression<Func<T13>> p13)
+        {
+            var boundExpression = ParameterBinder13.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13);
+            return boundExpression.Body;
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11, Expression p12, Expression p13)
+        {
+            var boundExpression = ParameterBinder13.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13);
+            return boundExpression.Body;
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11, Expression<Func<T12>> p12, Expression<Func<T13>> p13)
+        {
+            var boundExpression = ParameterBinder13.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13);
+            return boundExpression.Body;
         }
     }
 #endregion
@@ -8527,6 +8839,30 @@ namespace ExpressionToolkit
                             {expression.Parameters[13], p14.Body}
                         })
                     .Visit(expression.Body)!);
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, TResult>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11, Expression p12, Expression p13, Expression p14)
+        {
+            var boundExpression = ParameterBinder14.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14);
+            return boundExpression.Body;
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, TResult>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11, Expression<Func<T12>> p12, Expression<Func<T13>> p13, Expression<Func<T14>> p14)
+        {
+            var boundExpression = ParameterBinder14.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14);
+            return boundExpression.Body;
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11, Expression p12, Expression p13, Expression p14)
+        {
+            var boundExpression = ParameterBinder14.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14);
+            return boundExpression.Body;
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11, Expression<Func<T12>> p12, Expression<Func<T13>> p13, Expression<Func<T14>> p14)
+        {
+            var boundExpression = ParameterBinder14.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14);
+            return boundExpression.Body;
         }
     }
 #endregion
@@ -10061,6 +10397,30 @@ namespace ExpressionToolkit
                             {expression.Parameters[14], p15.Body}
                         })
                     .Visit(expression.Body)!);
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, TResult>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11, Expression p12, Expression p13, Expression p14, Expression p15)
+        {
+            var boundExpression = ParameterBinder15.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15);
+            return boundExpression.Body;
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, TResult>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11, Expression<Func<T12>> p12, Expression<Func<T13>> p13, Expression<Func<T14>> p14, Expression<Func<T15>> p15)
+        {
+            var boundExpression = ParameterBinder15.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15);
+            return boundExpression.Body;
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11, Expression p12, Expression p13, Expression p14, Expression p15)
+        {
+            var boundExpression = ParameterBinder15.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15);
+            return boundExpression.Body;
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11, Expression<Func<T12>> p12, Expression<Func<T13>> p13, Expression<Func<T14>> p14, Expression<Func<T15>> p15)
+        {
+            var boundExpression = ParameterBinder15.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15);
+            return boundExpression.Body;
         }
     }
 #endregion
@@ -11761,6 +12121,30 @@ namespace ExpressionToolkit
                             {expression.Parameters[15], p16.Body}
                         })
                     .Visit(expression.Body)!);
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, TResult>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11, Expression p12, Expression p13, Expression p14, Expression p15, Expression p16)
+        {
+            var boundExpression = ParameterBinder16.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16);
+            return boundExpression.Body;
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, TResult>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11, Expression<Func<T12>> p12, Expression<Func<T13>> p13, Expression<Func<T14>> p14, Expression<Func<T15>> p15, Expression<Func<T16>> p16)
+        {
+            var boundExpression = ParameterBinder16.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16);
+            return boundExpression.Body;
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>> expression, Expression p1, Expression p2, Expression p3, Expression p4, Expression p5, Expression p6, Expression p7, Expression p8, Expression p9, Expression p10, Expression p11, Expression p12, Expression p13, Expression p14, Expression p15, Expression p16)
+        {
+            var boundExpression = ParameterBinder16.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16);
+            return boundExpression.Body;
+        }
+
+        public static Expression BindParametersAndReturnBody<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(this Expression<Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>> expression, Expression<Func<T1>> p1, Expression<Func<T2>> p2, Expression<Func<T3>> p3, Expression<Func<T4>> p4, Expression<Func<T5>> p5, Expression<Func<T6>> p6, Expression<Func<T7>> p7, Expression<Func<T8>> p8, Expression<Func<T9>> p9, Expression<Func<T10>> p10, Expression<Func<T11>> p11, Expression<Func<T12>> p12, Expression<Func<T13>> p13, Expression<Func<T14>> p14, Expression<Func<T15>> p15, Expression<Func<T16>> p16)
+        {
+            var boundExpression = ParameterBinder16.BindParameters(expression, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16);
+            return boundExpression.Body;
         }
     }
 #endregion

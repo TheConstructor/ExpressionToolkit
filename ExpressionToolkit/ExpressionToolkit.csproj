@@ -15,6 +15,14 @@
             <AutoGen>True</AutoGen>
             <DependentUpon>ParameterBinder.tt</DependentUpon>
         </Compile>
+        <T4Transform Include="InvokeExpression.tt">
+            <LastGenOutput>InvokeExpression.cs</LastGenOutput>
+        </T4Transform>
+        <Compile Update="InvokeExpression.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>InvokeExpression.tt</DependentUpon>
+        </Compile>
     </ItemGroup>
 
     <ItemGroup>

@@ -1,0 +1,73 @@
+﻿<#@ template language="C#" debug="false" hostspecific="false" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="System.Linq" #>
+using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+
+namespace ExpressionToolkit
+{
+<#
+    for (var pCount = 1; pCount <= 16; pCount++)
+    {
+#>
+
+#region Action & Func having <#=pCount#> parameters
+    public static class InvokeExpression<#=pCount#>
+    {
+<#
+        for (var pBound = 1; pBound < pCount; pBound++)
+        {
+#>
+
+#region Binding first <#=pBound#> Parameters
+        [ReplaceWith(nameof(ParameterBinder<#=pCount#>), nameof(ParameterBinder<#=pCount#>.BindParameters))]
+        public static Func<<#= string.Join(", ", Enumerable.Range(pBound + 1, pCount - pBound).Select(p => $"T{p}")) #>, TResult> BindAndCompile<<#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"T{p}")) #>, TResult>(this Expression<Func<<#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"T{p}")) #>, TResult>> expression, <#= string.Join(", ", Enumerable.Range(1, pBound).Select(p => $"T{p} p{p}")) #>)
+        {
+            var boundExpression = ParameterBinder<#=pCount#>.BindParameters(expression, <#= string.Join(", ", Enumerable.Range(1, pBound).Select(p => $"Expression.Constant(p{p})")) #>);
+            return boundExpression.Compile();
+        }
+
+        [ReplaceWith(nameof(ParameterBinder<#=pCount#>), nameof(ParameterBinder<#=pCount#>.BindParameters))]
+        public static Action<<#= string.Join(", ", Enumerable.Range(pBound + 1, pCount - pBound).Select(p => $"T{p}")) #>> BindAndCompile<<#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"T{p}")) #>>(this Expression<Action<<#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"T{p}")) #>>> expression, <#= string.Join(", ", Enumerable.Range(1, pBound).Select(p => $"T{p} p{p}")) #>)
+        {
+            var boundExpression = ParameterBinder<#=pCount#>.BindParameters(expression, <#= string.Join(", ", Enumerable.Range(1, pBound).Select(p => $"Expression.Constant(p{p})")) #>);
+            return boundExpression.Compile();
+        }
+#endregion
+<#
+        }
+#>
+        [ReplaceWith(nameof(ParameterBinder<#=pCount#>), nameof(ParameterBinder<#=pCount#>.BindParameters))]
+        public static Func<TResult> BindAndCompile<<#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"T{p}")) #>, TResult>(this Expression<Func<<#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"T{p}")) #>, TResult>> expression, <#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"T{p} p{p}")) #>)
+        {
+            var boundExpression = ParameterBinder<#=pCount#>.BindParameters(expression, <#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"Expression.Constant(p{p})")) #>);
+            return boundExpression.Compile();
+        }
+
+        [ReplaceWith(nameof(ParameterBinder<#=pCount#>), nameof(ParameterBinder<#=pCount#>.BindParameters))]
+        public static Action BindAndCompile<<#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"T{p}")) #>>(this Expression<Action<<#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"T{p}")) #>>> expression, <#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"T{p} p{p}")) #>)
+        {
+            var boundExpression = ParameterBinder<#=pCount#>.BindParameters(expression, <#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"Expression.Constant(p{p})")) #>);
+            return boundExpression.Compile();
+        }
+
+        [ReplaceWith(nameof(ParameterBinder<#=pCount#>), nameof(ParameterBinder<#=pCount#>.BindParametersAndReturnBody))]
+        public static TResult CompileAndInvoke<<#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"T{p}")) #>, TResult>(this Expression<Func<<#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"T{p}")) #>, TResult>> expression, <#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"T{p} p{p}")) #>)
+        {
+            var func = expression.Compile();
+            return func(<#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"p{p}")) #>);
+        }
+
+        [ReplaceWith(nameof(ParameterBinder<#=pCount#>), nameof(ParameterBinder<#=pCount#>.BindParametersAndReturnBody))]
+        public static void CompileAndInvoke<<#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"T{p}")) #>>(this Expression<Action<<#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"T{p}")) #>>> expression, <#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"T{p} p{p}")) #>)
+        {
+            var action = expression.Compile();
+            action(<#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"p{p}")) #>);
+        }
+    }
+#endregion
+<#
+    }
+#>
+}

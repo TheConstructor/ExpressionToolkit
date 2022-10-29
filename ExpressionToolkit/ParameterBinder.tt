@@ -116,6 +116,30 @@ namespace ExpressionToolkit
                         })
                     .Visit(expression.Body)!);
         }
+
+        public static Expression BindParametersAndReturnBody<<#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"T{p}")) #>, TResult>(this Expression<Func<<#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"T{p}")) #>, TResult>> expression, <#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"Expression p{p}")) #>)
+        {
+            var boundExpression = ParameterBinder<#=pCount#>.BindParameters(expression, <#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"p{p}")) #>);
+            return boundExpression.Body;
+        }
+
+        public static Expression BindParametersAndReturnBody<<#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"T{p}")) #>, TResult>(this Expression<Func<<#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"T{p}")) #>, TResult>> expression, <#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"Expression<Func<T{p}>> p{p}")) #>)
+        {
+            var boundExpression = ParameterBinder<#=pCount#>.BindParameters(expression, <#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"p{p}")) #>);
+            return boundExpression.Body;
+        }
+
+        public static Expression BindParametersAndReturnBody<<#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"T{p}")) #>>(this Expression<Action<<#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"T{p}")) #>>> expression, <#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"Expression p{p}")) #>)
+        {
+            var boundExpression = ParameterBinder<#=pCount#>.BindParameters(expression, <#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"p{p}")) #>);
+            return boundExpression.Body;
+        }
+
+        public static Expression BindParametersAndReturnBody<<#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"T{p}")) #>>(this Expression<Action<<#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"T{p}")) #>>> expression, <#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"Expression<Func<T{p}>> p{p}")) #>)
+        {
+            var boundExpression = ParameterBinder<#=pCount#>.BindParameters(expression, <#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"p{p}")) #>);
+            return boundExpression.Body;
+        }
     }
 #endregion
 <#

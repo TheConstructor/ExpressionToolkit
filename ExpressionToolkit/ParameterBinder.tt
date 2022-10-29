@@ -7,14 +7,14 @@ using System.Linq.Expressions;
 
 namespace ExpressionToolkit
 {
-    public static class ParameterBinder
-    {
 <#
     for (var pCount = 1; pCount <= 16; pCount++)
     {
 #>
 
-#region <#=pCount#> Parameter
+#region Action & Func having <#=pCount#> parameters
+    public static class ParameterBinder<#=pCount#>
+    {
 <#
         for (var pBound = 1; pBound < pCount; pBound++)
         {
@@ -116,9 +116,9 @@ namespace ExpressionToolkit
                         })
                     .Visit(expression.Body)!);
         }
+    }
 #endregion
 <#
     }
 #>
-    }
 }

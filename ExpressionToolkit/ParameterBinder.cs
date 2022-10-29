@@ -4,10 +4,10 @@ using System.Linq.Expressions;
 
 namespace ExpressionToolkit
 {
-    public static class ParameterBinder
-    {
 
-#region 1 Parameter
+#region Action & Func having 1 parameters
+    public static class ParameterBinder1
+    {
 
         public static Expression<Func<TResult>> BindParameters<T1, TResult>(this Expression<Func<T1, TResult>> expression, Expression p1)
         {
@@ -52,9 +52,12 @@ namespace ExpressionToolkit
                         })
                     .Visit(expression.Body)!);
         }
+    }
 #endregion
 
-#region 2 Parameter
+#region Action & Func having 2 parameters
+    public static class ParameterBinder2
+    {
 
 #region Binding first 1 Parameters
         public static Expression<Func<T2, TResult>> BindParameters<T1, T2, TResult>(this Expression<Func<T1, T2, TResult>> expression, Expression p1)
@@ -153,9 +156,12 @@ namespace ExpressionToolkit
                         })
                     .Visit(expression.Body)!);
         }
+    }
 #endregion
 
-#region 3 Parameter
+#region Action & Func having 3 parameters
+    public static class ParameterBinder3
+    {
 
 #region Binding first 1 Parameters
         public static Expression<Func<T2, T3, TResult>> BindParameters<T1, T2, T3, TResult>(this Expression<Func<T1, T2, T3, TResult>> expression, Expression p1)
@@ -316,9 +322,12 @@ namespace ExpressionToolkit
                         })
                     .Visit(expression.Body)!);
         }
+    }
 #endregion
 
-#region 4 Parameter
+#region Action & Func having 4 parameters
+    public static class ParameterBinder4
+    {
 
 #region Binding first 1 Parameters
         public static Expression<Func<T2, T3, T4, TResult>> BindParameters<T1, T2, T3, T4, TResult>(this Expression<Func<T1, T2, T3, T4, TResult>> expression, Expression p1)
@@ -549,9 +558,12 @@ namespace ExpressionToolkit
                         })
                     .Visit(expression.Body)!);
         }
+    }
 #endregion
 
-#region 5 Parameter
+#region Action & Func having 5 parameters
+    public static class ParameterBinder5
+    {
 
 #region Binding first 1 Parameters
         public static Expression<Func<T2, T3, T4, T5, TResult>> BindParameters<T1, T2, T3, T4, T5, TResult>(this Expression<Func<T1, T2, T3, T4, T5, TResult>> expression, Expression p1)
@@ -860,9 +872,12 @@ namespace ExpressionToolkit
                         })
                     .Visit(expression.Body)!);
         }
+    }
 #endregion
 
-#region 6 Parameter
+#region Action & Func having 6 parameters
+    public static class ParameterBinder6
+    {
 
 #region Binding first 1 Parameters
         public static Expression<Func<T2, T3, T4, T5, T6, TResult>> BindParameters<T1, T2, T3, T4, T5, T6, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, TResult>> expression, Expression p1)
@@ -1257,9 +1272,12 @@ namespace ExpressionToolkit
                         })
                     .Visit(expression.Body)!);
         }
+    }
 #endregion
 
-#region 7 Parameter
+#region Action & Func having 7 parameters
+    public static class ParameterBinder7
+    {
 
 #region Binding first 1 Parameters
         public static Expression<Func<T2, T3, T4, T5, T6, T7, TResult>> BindParameters<T1, T2, T3, T4, T5, T6, T7, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, TResult>> expression, Expression p1)
@@ -1748,9 +1766,12 @@ namespace ExpressionToolkit
                         })
                     .Visit(expression.Body)!);
         }
+    }
 #endregion
 
-#region 8 Parameter
+#region Action & Func having 8 parameters
+    public static class ParameterBinder8
+    {
 
 #region Binding first 1 Parameters
         public static Expression<Func<T2, T3, T4, T5, T6, T7, T8, TResult>> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, TResult>> expression, Expression p1)
@@ -2341,9 +2362,12 @@ namespace ExpressionToolkit
                         })
                     .Visit(expression.Body)!);
         }
+    }
 #endregion
 
-#region 9 Parameter
+#region Action & Func having 9 parameters
+    public static class ParameterBinder9
+    {
 
 #region Binding first 1 Parameters
         public static Expression<Func<T2, T3, T4, T5, T6, T7, T8, T9, TResult>> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, TResult>> expression, Expression p1)
@@ -3044,9 +3068,12 @@ namespace ExpressionToolkit
                         })
                     .Visit(expression.Body)!);
         }
+    }
 #endregion
 
-#region 10 Parameter
+#region Action & Func having 10 parameters
+    public static class ParameterBinder10
+    {
 
 #region Binding first 1 Parameters
         public static Expression<Func<T2, T3, T4, T5, T6, T7, T8, T9, T10, TResult>> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, TResult>> expression, Expression p1)
@@ -3865,9 +3892,12 @@ namespace ExpressionToolkit
                         })
                     .Visit(expression.Body)!);
         }
+    }
 #endregion
 
-#region 11 Parameter
+#region Action & Func having 11 parameters
+    public static class ParameterBinder11
+    {
 
 #region Binding first 1 Parameters
         public static Expression<Func<T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, TResult>> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, TResult>> expression, Expression p1)
@@ -4812,9 +4842,12 @@ namespace ExpressionToolkit
                         })
                     .Visit(expression.Body)!);
         }
+    }
 #endregion
 
-#region 12 Parameter
+#region Action & Func having 12 parameters
+    public static class ParameterBinder12
+    {
 
 #region Binding first 1 Parameters
         public static Expression<Func<T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, TResult>> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, TResult>> expression, Expression p1)
@@ -5893,9 +5926,12 @@ namespace ExpressionToolkit
                         })
                     .Visit(expression.Body)!);
         }
+    }
 #endregion
 
-#region 13 Parameter
+#region Action & Func having 13 parameters
+    public static class ParameterBinder13
+    {
 
 #region Binding first 1 Parameters
         public static Expression<Func<T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, TResult>> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, TResult>> expression, Expression p1)
@@ -7116,9 +7152,12 @@ namespace ExpressionToolkit
                         })
                     .Visit(expression.Body)!);
         }
+    }
 #endregion
 
-#region 14 Parameter
+#region Action & Func having 14 parameters
+    public static class ParameterBinder14
+    {
 
 #region Binding first 1 Parameters
         public static Expression<Func<T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, TResult>> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, TResult>> expression, Expression p1)
@@ -8489,9 +8528,12 @@ namespace ExpressionToolkit
                         })
                     .Visit(expression.Body)!);
         }
+    }
 #endregion
 
-#region 15 Parameter
+#region Action & Func having 15 parameters
+    public static class ParameterBinder15
+    {
 
 #region Binding first 1 Parameters
         public static Expression<Func<T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, TResult>> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, TResult>> expression, Expression p1)
@@ -10020,9 +10062,12 @@ namespace ExpressionToolkit
                         })
                     .Visit(expression.Body)!);
         }
+    }
 #endregion
 
-#region 16 Parameter
+#region Action & Func having 16 parameters
+    public static class ParameterBinder16
+    {
 
 #region Binding first 1 Parameters
         public static Expression<Func<T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, TResult>> BindParameters<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, TResult>(this Expression<Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, TResult>> expression, Expression p1)
@@ -11717,6 +11762,6 @@ namespace ExpressionToolkit
                         })
                     .Visit(expression.Body)!);
         }
-#endregion
     }
+#endregion
 }

@@ -2,10 +2,10 @@
 
 namespace ExpressionToolkit
 {
-    [AttributeUsage(AttributeTargets.Method)]
+    [AttributeUsage(AttributeTargets.Method, Inherited = false, AllowMultiple = false)]
     public class ReplaceWith : Attribute
     {
-        public string TypeName { get; }
+        public Type Container { get; }
         public string MemberName { get; }
 
         public ReplaceWith(string memberName)
@@ -13,9 +13,9 @@ namespace ExpressionToolkit
         {
         }
 
-        public ReplaceWith(string typeName, string memberName)
+        public ReplaceWith(Type container, string memberName)
         {
-            TypeName = typeName;
+            Container = container;
             MemberName = memberName;
         }
     }

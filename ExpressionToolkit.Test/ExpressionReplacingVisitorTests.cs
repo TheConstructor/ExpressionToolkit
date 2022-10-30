@@ -67,4 +67,25 @@ public class ExpressionReplacingVisitorTests
         var actual = visitor.Visit(input);
         actual?.ToString().ShouldBe(result.ToString());
     }
+
+    public static TheoryData<Expression, Expression> ReplaceWithTestData()
+    {
+        var func = (Expression<Func<int, int>>) (a => a);
+        return new TheoryData<Expression, Expression>
+        {
+            {
+                (Expression<Func<int>>) (() => func.CompileAndInvoke(3)),
+                (Expression<Func<int>>) (() => 3)
+            }
+        };
+    }
+
+    [Theory]
+    [MemberData(nameof(ReplaceWithTestData))]
+    public void ReplaceWithTest(Expression input, Expression result)
+    {
+        var visitor = new ExpressionReplacingVisitor(ImmutableDictionary<Expression, Expression>.Empty);
+        var actual = visitor.Visit(input);
+        actual?.ToString().ShouldBe(result.ToString());
+    }
 }

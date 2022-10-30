@@ -16,6 +16,24 @@ namespace ExpressionToolkit
             return expression.Body;
         }
 
+        public static bool TryResolveAs<T>(this Expression expression, out T value)
+        {
+            if (expression is T t)
+            {
+                value = t;
+                return true;
+            }
+
+            if (TryResolveValue(expression, out var obj)
+                && obj is T t2)
+            {
+                value = t2;
+                return true;
+            }
+
+            value = default;
+            return false;
+        }
         public static bool TryResolveValue(this Expression expression, out object value)
         {
             switch (expression)

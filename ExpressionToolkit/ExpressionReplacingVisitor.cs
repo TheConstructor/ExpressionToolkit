@@ -19,19 +19,23 @@ namespace ExpressionToolkit
             {
                 return replacement;
             }
+
             return base.Visit(node);
         }
 
         protected override Expression VisitInvocation(InvocationExpression node)
         {
-            if (node.Expression is MethodCallExpression mce
-                && typeof(LambdaExpression).IsAssignableFrom(mce.Method.DeclaringType)
-                && mce.Method.Name == nameof(LambdaExpression.Compile)
-                && mce.Object.TryResolveValue(out var value) 
-                && value is LambdaExpression lambdaExpression)
+            switch (node.Expression)
             {
-                return ParameterBinder.BindParametersAndReturnBody(lambdaExpression, node.Arguments);
+                case LambdaExpression le:
+                    return ParameterBinder.BindParametersAndReturnBody(le, node.Arguments);
+                case MethodCallExpression mce
+                    when typeof(LambdaExpression).IsAssignableFrom(mce.Method.DeclaringType)
+                         && mce.Method.Name == nameof(LambdaExpression.Compile)
+                         && mce.Object.TryResolveAs<LambdaExpression>(out var lambdaExpression):
+                    return ParameterBinder.BindParametersAndReturnBody(lambdaExpression, node.Arguments);
             }
+
             return base.VisitInvocation(node);
         }
     }

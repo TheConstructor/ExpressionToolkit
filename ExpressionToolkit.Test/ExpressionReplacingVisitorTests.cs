@@ -55,6 +55,10 @@ public class ExpressionReplacingVisitorTests
             {
                 (Expression<Func<int>>) (() => func.Compile()(3)),
                 (Expression<Func<int>>) (() => 3)
+            },
+            {
+                ParameterBinder1.BindParameters<Expression<Func<int, int>>, int>( f => f.Compile()(3), Expression.Constant(func)),
+                (Expression<Func<int>>) (() => 3)
             }
         };
     }

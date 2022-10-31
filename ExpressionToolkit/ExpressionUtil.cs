@@ -18,12 +18,6 @@ namespace ExpressionToolkit
 
         public static bool TryResolveAs<T>(this Expression expression, out T value)
         {
-            if (expression is T t)
-            {
-                value = t;
-                return true;
-            }
-
             if (TryResolveValue(expression, out var obj)
                 && obj is T t2)
             {

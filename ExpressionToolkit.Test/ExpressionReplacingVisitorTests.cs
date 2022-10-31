@@ -101,6 +101,14 @@ public class ExpressionReplacingVisitorTests
             {
                 (Expression<Func<int>>) (() => func.CompileAndInvoke(3)),
                 (Expression<Func<int>>) (() => 3)
+            },
+            {
+                (Expression<Func<int>>) (() => ((Expression<Func<int, int>>) (a => a)).CompileAndInvoke(4)),
+                (Expression<Func<int>>) (() => 4)
+            },
+            {
+                (Expression<Func<int>>) (() => InvokeExpression1.CompileAndInvoke(a => a, 5)),
+                (Expression<Func<int>>) (() => 5)
             }
         };
     }

@@ -28,6 +28,7 @@ namespace ExpressionToolkit
             value = default;
             return false;
         }
+
         public static bool TryResolveValue(this Expression expression, out object value)
         {
             switch (expression)
@@ -35,6 +36,25 @@ namespace ExpressionToolkit
                 case ConstantExpression constantExpression:
                     value = constantExpression.Value;
                     return true;
+                case UnaryExpression unaryExpression:
+                    switch (unaryExpression.NodeType)
+                    {
+                        case ExpressionType.Quote:
+                            value = unaryExpression.Operand;
+                            return true;
+                        case ExpressionType.Convert:
+                        case ExpressionType.ConvertChecked:
+                        {
+                            if (unaryExpression.Type.IsAssignableFrom(unaryExpression.Operand.Type))
+                            {
+                                return TryResolveValue(unaryExpression.Operand, out value);
+                            }
+
+                            break;
+                        }
+                    }
+
+                    break;
                 case MemberExpression memberExpression:
                     switch (memberExpression.Member)
                     {
@@ -59,6 +79,7 @@ namespace ExpressionToolkit
                             break;
                         }
                     }
+
                     break;
             }
 

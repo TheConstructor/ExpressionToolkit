@@ -7,26 +7,6 @@ namespace ExpressionToolkit.Test;
 
 public class ExpressionReplacingVisitorTests
 {
-    private static readonly Func<Expression, string> GetDebugView;
-
-    static ExpressionReplacingVisitorTests()
-    {
-        Func<Expression, string>? func;
-        try
-        {
-            var expression = Expression.Parameter(typeof(Expression), "expression");
-            func = Expression.Lambda<Func<Expression, string>>(
-                    Expression.Property(expression, typeof(Expression), "DebugView"),
-                    expression)
-                .Compile();
-        }
-        catch (ArgumentException)
-        {
-            func = expression => expression.ToString();
-        }
-
-        GetDebugView = func;
-    }
 
     public static TheoryData<Expression, Expression, Expression, Expression> SimpleReplacementTestData()
     {
@@ -65,7 +45,7 @@ public class ExpressionReplacingVisitorTests
             {needle, replacement}
         });
         var actual = visitor.Visit(input);
-        GetDebugView(actual).ShouldBe(GetDebugView(result));
+        TestUtil.GetDebugView(actual).ShouldBe(TestUtil.GetDebugView(result));
     }
 
     public static TheoryData<Expression, Expression> CompileAndInvokeTestData()
@@ -90,7 +70,7 @@ public class ExpressionReplacingVisitorTests
     {
         var visitor = new ExpressionReplacingVisitor(ImmutableDictionary<Expression, Expression>.Empty);
         var actual = visitor.Visit(input);
-        GetDebugView(actual).ShouldBe(GetDebugView(result));
+        TestUtil.GetDebugView(actual).ShouldBe(TestUtil.GetDebugView(result));
     }
 
     public static TheoryData<Expression, Expression> ReplaceWithTestData()
@@ -119,6 +99,6 @@ public class ExpressionReplacingVisitorTests
     {
         var visitor = new ExpressionReplacingVisitor(ImmutableDictionary<Expression, Expression>.Empty);
         var actual = visitor.Visit(input);
-        GetDebugView(actual).ShouldBe(GetDebugView(result));
+        TestUtil.GetDebugView(actual).ShouldBe(TestUtil.GetDebugView(result));
     }
 }

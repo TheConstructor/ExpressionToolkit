@@ -36,4 +36,11 @@
       </PackageReference>-->
     </ItemGroup>
 
+    <ItemGroup>
+      <None Include="ExternalAnnotations.ExpressionToolkit.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+          <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>

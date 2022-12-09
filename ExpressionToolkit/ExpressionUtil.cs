@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -6,6 +8,45 @@ namespace ExpressionToolkit
 {
     public static class ExpressionUtil
     {
+        public static Expression AsBlockIfNeeded(this IEnumerable<Expression> expressions)
+        {
+            switch (expressions)
+            {
+                case IReadOnlyCollection<Expression> {Count: 0}:
+                case ICollection<Expression> {Count: 0}:
+                    return Expression.Empty();
+                case IReadOnlyCollection<Expression> {Count: 1}:
+                case ICollection<Expression> {Count: 1}:
+                    return expressions.First();
+                default:
+                {
+                    var block = Expression.Block(expressions);
+                    return block.Expressions.Count switch
+                    {
+                        0 => Expression.Empty(),
+                        1 => block.Expressions[0],
+                        _ => block
+                    };
+                }
+            }
+        }
+
+        public static Expression While(Expression condition, params Expression[] body)
+        {
+            return While(condition, (IEnumerable<Expression>) body);
+        }
+
+        public static Expression While(Expression condition, IEnumerable<Expression> body)
+        {
+            var breakLabel = Expression.Label();
+            return Expression.Loop(
+                Expression.IfThenElse(
+                    condition,
+                    body.AsBlockIfNeeded(),
+                    Expression.Break(breakLabel)),
+                breakLabel);
+        }
+
         public static Expression BodyOf(this Expression<Action> expression)
         {
             return expression.Body;

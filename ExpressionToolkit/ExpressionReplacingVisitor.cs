@@ -29,12 +29,12 @@ namespace ExpressionToolkit
             switch (node.Expression)
             {
                 case LambdaExpression le:
-                    return ParameterBinder.BindParametersAndReturnBody(le, node.Arguments);
+                    return Visit(ParameterBinder.BindParametersAndReturnBody(le, node.Arguments))!;
                 case MethodCallExpression mce
                     when typeof(LambdaExpression).IsAssignableFrom(mce.Method.DeclaringType)
                          && mce.Method.Name == nameof(LambdaExpression.Compile)
                          && mce.Object.TryResolveAs<LambdaExpression>(out var lambdaExpression):
-                    return ParameterBinder.BindParametersAndReturnBody(lambdaExpression, node.Arguments);
+                    return Visit(ParameterBinder.BindParametersAndReturnBody(lambdaExpression, node.Arguments))!;
             }
 
             return base.VisitInvocation(node);
@@ -88,7 +88,8 @@ namespace ExpressionToolkit
                         }
                     }
 
-                    return (Expression) method.Invoke(obj, arguments);
+                    var newExpression = (Expression) method.Invoke(obj, arguments);
+                    return ReferenceEquals(node, newExpression) ? node : Visit(newExpression)!;
                     nextMethod: ;
                 }
             }

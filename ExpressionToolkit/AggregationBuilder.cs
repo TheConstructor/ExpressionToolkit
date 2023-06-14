@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Runtime.ExceptionServices;
 
 // ReSharper disable VariableHidesOuterVariable
 
@@ -82,6 +83,8 @@ namespace ExpressionToolkit
             new ReplacementCollector<TIn>(aggregation.Parameters[0], builder, replacements)
                 .Visit(aggregation);
 
+            ThrowOnInvalidReplacements(replacements);
+
             body.Add(Expression.Assign(
                 enumerator,
                 ParameterBinder1.BindParametersAndReturnBody(
@@ -111,11 +114,38 @@ namespace ExpressionToolkit
                 enumerable);
         }
 
+        private static void ThrowOnInvalidReplacements(Dictionary<Expression, Expression> replacements)
+        {
+            var invalidReplacements = new List<Exception>();
+            foreach (var throwExpression in replacements.Values.OfType<UnaryExpression>()
+                         .Where(e => e.NodeType == ExpressionType.Throw))
+            {
+                try
+                {
+                    Expression.Lambda<Action>(throwExpression).Compile().Invoke();
+                }
+                catch (Exception e)
+                {
+                    invalidReplacements.Add(e);
+                }
+            }
+
+            if (invalidReplacements.Count == 1)
+            {
+                ExceptionDispatchInfo.Capture(invalidReplacements.Single()).Throw();
+            }
+            else if (invalidReplacements.Count > 1)
+            {
+                throw new AggregateException("You aggregator could not be created", invalidReplacements);
+            }
+        }
+
         private class ReplacementCollector<TIn> : ExpressionVisitor
         {
             private readonly ParameterExpression _builderParameter;
             private readonly AggregationBuilder<TIn> _builder;
             private readonly Dictionary<Expression, Expression> _replacements;
+            private readonly Dictionary<Expression, IAggregationBuilder> _subBuilders;
 
             public ReplacementCollector(
                 ParameterExpression builderParameter,
@@ -123,13 +153,19 @@ namespace ExpressionToolkit
                 Dictionary<Expression, Expression> replacements)
             {
                 _builderParameter = builderParameter;
-                _replacements = replacements;
                 _builder = builder;
+                _replacements = replacements;
+                _subBuilders = new Dictionary<Expression, IAggregationBuilder>();
             }
 
             protected override Expression VisitMethodCall(MethodCallExpression node)
             {
-                if (node.Method.DeclaringType == typeof(AggregationBuilder<TIn>))
+                var methodDeclaringType = node.Method.DeclaringType;
+                if (!(methodDeclaringType is {IsConstructedGenericType: true}) 
+                    || methodDeclaringType.GetGenericTypeDefinition() != typeof(AggregationBuilder<>))
+                    return base.VisitMethodCall(node);
+
+                if (node.Object == _builderParameter)
                 {
                     Expression.Lambda<Action<AggregationBuilder<TIn>>>(node, _builderParameter)
                         .CompileAndInvoke(_builder);
@@ -137,29 +173,60 @@ namespace ExpressionToolkit
                     return node;
                 }
 
-                return base.VisitMethodCall(node);
+                if (node.Object is MethodCallExpression
+                    {
+                        Method: {DeclaringType: {IsConstructedGenericType: true} declaringType}
+                    } objectSelectorExpression
+                    && declaringType.GetGenericTypeDefinition() == typeof(AggregationBuilder<>))
+                {
+                    if (!_subBuilders.TryGetValue(objectSelectorExpression, out var subBuilder))
+                    {
+                        subBuilder = Expression
+                            .Lambda<Func<AggregationBuilder<TIn>, IAggregationBuilder>>(objectSelectorExpression, _builderParameter)
+                            .CompileAndInvoke(_builder);
+                        _subBuilders.Add(objectSelectorExpression, subBuilder);
+                    }
+
+                    var subBuilderParameter = Expression.Parameter(subBuilder.GetType());
+                    Expression.Lambda(node.Update(subBuilderParameter, node.Arguments), subBuilderParameter)
+                        .Compile().DynamicInvoke(subBuilder);
+                    _replacements.Add(node, subBuilder.ReplaceWith);
+                    return node;
+                }
+
+                throw new InvalidOperationException(
+                    $"We currently don't support the way {node} is bound to an AggregationBuilder instance. Please remove any cast or custom instantiation");
             }
         }
     }
 
-    public class AggregationBuilder<TIn>
+    internal interface IAggregationBuilder
+    {
+        Expression ReplaceWith { get; }
+    }
+
+    public class AggregationBuilder<TIn> : IAggregationBuilder
     {
         private readonly List<ParameterExpression> _variables;
         private readonly List<Expression> _preparation;
         private readonly List<Expression> _onNoElement;
         private readonly List<Expression> _onFirstElement;
         private readonly List<Expression> _onNextElements;
-        private readonly ParameterExpression _current;
-        private bool _rejectsEmptyEnumerable = false;
+        private readonly Expression _current;
 
-        internal Expression ReplaceWith { get; private set; }
+        internal Expression ReplaceWith { get; set; }
+
+        Expression IAggregationBuilder.ReplaceWith => ReplaceWith;
+
+        private bool RejectsEmptyEnumerable
+            => _onNoElement.FirstOrDefault() is UnaryExpression {NodeType: ExpressionType.Throw};
 
         internal AggregationBuilder(List<ParameterExpression> variables,
             List<Expression> preparation,
             List<Expression> onNoElement,
             List<Expression> onFirstElement,
             List<Expression> onNextElements,
-            ParameterExpression current)
+            Expression current)
         {
             _variables = variables;
             _preparation = preparation;
@@ -498,6 +565,34 @@ namespace ExpressionToolkit
                 (list, item) => list.Add(item));
         }
 
+        /// <inheritdoc cref="M:System.Linq.Enumerable.ToHashSet``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEqualityComparer{``0})"/>
+        public HashSet<TIn> ToHashSet(IEqualityComparer<TIn> comparer)
+        {
+            return Aggregate(
+                () => new HashSet<TIn>(comparer),
+                (list, item) => list.Add(item));
+        }
+
+        /// <inheritdoc cref="M:System.Linq.Enumerable.Select``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1})"/>
+        public AggregationBuilder<TResult> Select<TResult>(Expression<Func<TIn, TResult>> selector)
+        {
+            var variable = Variable(typeof(TResult));
+            OnAllElements(Expression.Assign(variable, selector.BindParametersAndReturnBody(_current)));
+            ReplaceWith = Expression.Throw(
+                ParameterBinder1.BindParametersAndReturnBody(
+                    (Expression<Func<TIn, TResult>> selector) => new InvalidOperationException(
+                        $"Can not include the AggregationBuilder<{typeof(TResult)}> of Select({selector}) in the result. Please call a method on it"),
+                    Expression.Quote(selector)),
+                typeof(AggregationBuilder<TResult>));
+            return new AggregationBuilder<TResult>(
+                _variables,
+                _preparation,
+                _onNoElement,
+                _onFirstElement,
+                _onNextElements,
+                variable);
+        }
+
         private ParameterExpression Variable(Type type)
         {
             return Variable(Expression.Variable(type));
@@ -516,7 +611,7 @@ namespace ExpressionToolkit
 
         private void OnNoElement(Expression expression)
         {
-            if (_rejectsEmptyEnumerable)
+            if (RejectsEmptyEnumerable)
             {
                 return;
             }
@@ -542,12 +637,11 @@ namespace ExpressionToolkit
 
         private void RejectEmptyEnumerable()
         {
-            if (_rejectsEmptyEnumerable)
+            if (RejectsEmptyEnumerable)
             {
                 return;
             }
 
-            _rejectsEmptyEnumerable = true;
             _onNoElement.Clear();
             _onNoElement.Add(Expression.Throw(
                 ExpressionUtil.BodyOf(() =>

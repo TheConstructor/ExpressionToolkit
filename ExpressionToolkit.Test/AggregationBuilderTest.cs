@@ -309,4 +309,34 @@ public class AggregationBuilderTest
                     .ShouldBeOfType<HashSet<int>>()
                     .ShouldBe(Enumerable.Range(0, 42)));
     }
+
+    [Theory]
+    [InlineData(new[] {1,2,3},new[] {4,5,6}, 6, 15)]
+    public void TupleAggregateSumIsDetermined(int[] input1, int[] input2, int expectedSum1, int expectedSum2)
+    {
+        var input = input1.Zip(input2);
+        var aggregatorExpression
+            = input.CreateAggregator(builder
+                => new
+                {
+                    Sum1 = builder.Select(tuple => tuple.First).Sum(),
+                    Output1 = builder.Select(tuple => tuple.First).ToArray(),
+                    Sum2 = builder.Select(tuple => tuple.Second).Sum(),
+                    Output2 = builder.Select(tuple => tuple.Second).ToArray()
+                });
+        var aggregator = aggregatorExpression.Compile();
+        aggregator(input).ShouldSatisfyAllConditions(
+            o => o.Sum1.ShouldBe(expectedSum1),
+            o => o.Output1.ShouldBe(input1),
+            o => o.Sum2.ShouldBe(expectedSum2),
+            o => o.Output2.ShouldBe(input2));
+    }
+
+    [Fact]
+    public void SubBuilderCanNotBeReturned()
+    {
+        var input = Enumerable.Range(0, 2);
+        ShouldThrowExtensions.ShouldThrow<InvalidOperationException>(() => input.CreateAggregator(builder => builder.Select(i => i)))
+            .Message.ShouldStartWith("Can not include the AggregationBuilder");
+    }
 }

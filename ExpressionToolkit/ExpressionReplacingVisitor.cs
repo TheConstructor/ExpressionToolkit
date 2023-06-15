@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -45,10 +46,9 @@ namespace ExpressionToolkit
             var calledMethod = node.Method;
             var replaceWith = calledMethod.GetCustomAttributes<ReplaceWith>(false)
                 .FirstOrDefault();
-            object obj = null;
-            if (replaceWith != null
-                && (calledMethod.IsStatic || node.Object.TryResolveValue(out obj)))
+            if (replaceWith != null)
             {
+                var instance = new Lazy<(bool found, object value)>(() => (node.Object.TryResolveValue(out var value), value));
                 var type = replaceWith.Container ?? calledMethod.DeclaringType;
 
                 var methods = type.GetMethods(calledMethod.IsStatic
@@ -67,18 +67,20 @@ namespace ExpressionToolkit
                                               || t.p.ParameterType.IsAssignableFrom(t.a.Type))
                                 && typeof(Expression).IsAssignableFrom(m.ReturnType));
 
+                var nodeArguments = node.Arguments.Select(InputOrReplacement).ToArray();
+
                 foreach (var method in methods)
                 {
                     var parameters = method.GetParameters();
                     var arguments = new object[parameters.Length];
                     for (var i = 0; i < parameters.Length; i++)
                     {
-                        if (parameters[i].ParameterType.IsInstanceOfType(node.Arguments[i]))
+                        if (parameters[i].ParameterType.IsInstanceOfType(nodeArguments[i]))
                         {
-                            arguments[i] = node.Arguments[i];
+                            arguments[i] = nodeArguments[i];
                         }
-                        else if (parameters[i].ParameterType.IsAssignableFrom(node.Arguments[i].Type)
-                                 && node.Arguments[i].TryResolveValue(out var argument))
+                        else if (parameters[i].ParameterType.IsAssignableFrom(nodeArguments[i].Type)
+                                 && nodeArguments[i].TryResolveValue(out var argument))
                         {
                             arguments[i] = argument;
                         }
@@ -88,13 +90,31 @@ namespace ExpressionToolkit
                         }
                     }
 
-                    var newExpression = (Expression) method.Invoke(obj, arguments);
+                    object target;
+                    if (method.IsStatic)
+                    {
+                        target = null;
+                    }
+                    else if (instance.Value is {found: true} instanceValue)
+                    {
+                        target = instanceValue;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                    var newExpression = (Expression) method.Invoke(target, arguments);
                     return ReferenceEquals(node, newExpression) ? node : Visit(newExpression)!;
                     nextMethod: ;
                 }
             }
 
             return base.VisitMethodCall(node);
+        }
+
+        private Expression InputOrReplacement(Expression input)
+        {
+            return _replacements.TryGetValue(input, out var replacement) ? replacement : input;
         }
     }
 }

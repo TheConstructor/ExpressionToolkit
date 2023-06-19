@@ -26,6 +26,13 @@
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="Fody" Version="6.7.0">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="JetBrainsAnnotations.Fody" Version="2.17.0">
+          <PrivateAssets>all</PrivateAssets>
+      </PackageReference>
       <PackageReference Include="Mono.TextTemplating.Build" Version="2.3.0-preview-0048-g38de54eb32">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -36,11 +43,5 @@
       </PackageReference>-->
     </ItemGroup>
 
-    <ItemGroup>
-      <None Include="ExternalAnnotations.ExpressionToolkit.xml">
-          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-          <CopyToPublishDirectory>Always</CopyToPublishDirectory>
-      </None>
-    </ItemGroup>
 
 </Project>

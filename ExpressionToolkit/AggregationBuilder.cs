@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.ExceptionServices;
+using JetBrains.Annotations;
 
 // ReSharper disable VariableHidesOuterVariable
 
@@ -39,7 +40,7 @@ namespace ExpressionToolkit
             };
 
         public static Expression<Func<IEnumerable<TIn>, TResult>> CreateAggregator<TIn, TResult>(
-                this IEnumerable<TIn> example,
+                [NoEnumeration] this IEnumerable<TIn> example,
                 Expression<Func<AggregationBuilder<TIn>, TResult>> aggregation)
         {
             return CreateAggregator(aggregation);

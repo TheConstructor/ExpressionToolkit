@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -57,7 +58,7 @@ namespace ExpressionToolkit
             return expression.Body;
         }
 
-        public static bool TryResolveAs<T>(this Expression expression, out T value)
+        public static bool TryResolveAs<T>(this Expression expression, [MaybeNullWhen(false)] out T value)
         {
             if (TryResolveValue(expression, out var obj)
                 && obj is T t2)
@@ -70,7 +71,7 @@ namespace ExpressionToolkit
             return false;
         }
 
-        public static bool TryResolveValue(this Expression expression, out object value)
+        public static bool TryResolveValue(this Expression expression, [MaybeNullWhen(false)] out object value)
         {
             switch (expression)
             {

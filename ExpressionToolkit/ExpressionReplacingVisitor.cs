@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -15,7 +16,8 @@ namespace ExpressionToolkit
             _replacements = replacements;
         }
 
-        public override Expression Visit(Expression node)
+        [return: NotNullIfNotNull("node")]
+        public override Expression? Visit(Expression? node)
         {
             if (node != null && _replacements.TryGetValue(node, out var replacement))
             {
@@ -48,7 +50,10 @@ namespace ExpressionToolkit
                 .FirstOrDefault();
             if (replaceWith != null)
             {
-                var instance = new Lazy<(bool found, object value)>(() => (node.Object.TryResolveValue(out var value), value));
+                var instance = new Lazy<(bool found, object? value)>(
+                    () => node.Object == null
+                        ? (false, null)
+                        : (node.Object.TryResolveValue(out var value), value));
                 var type = replaceWith.Container ?? calledMethod.DeclaringType;
 
                 var methods = type.GetMethods(calledMethod.IsStatic
@@ -90,7 +95,7 @@ namespace ExpressionToolkit
                         }
                     }
 
-                    object target;
+                    object? target;
                     if (method.IsStatic)
                     {
                         target = null;

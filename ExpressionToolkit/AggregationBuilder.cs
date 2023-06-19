@@ -40,7 +40,7 @@ namespace ExpressionToolkit
             };
 
         public static Expression<Func<IEnumerable<TIn>, TResult>> CreateAggregator<TIn, TResult>(
-                [NoEnumeration] this IEnumerable<TIn> example,
+                [NoEnumeration] this IEnumerable<TIn>? example,
                 Expression<Func<AggregationBuilder<TIn>, TResult>> aggregation)
         {
             return CreateAggregator(aggregation);
@@ -214,8 +214,14 @@ namespace ExpressionToolkit
         private readonly List<Expression> _onFirstElement;
         private readonly List<Expression> _onNextElements;
         private readonly Expression _current;
+        private Expression? _replaceWith;
 
-        internal Expression ReplaceWith { get; set; }
+        internal Expression ReplaceWith
+        {
+            get => _replaceWith
+                   ?? throw new InvalidOperationException("Replacement was not registered. This is likely a bug");
+            private set => _replaceWith = value;
+        }
 
         Expression IAggregationBuilder.ReplaceWith => ReplaceWith;
 
@@ -241,28 +247,28 @@ namespace ExpressionToolkit
         public TIn Max()
         {
             ReplaceWith = MinOrMax<TIn>(_current, Expression.LessThan);
-            return default;
+            return default!;
         }
 
         /// <inheritdoc cref="M:System.Linq.Enumerable.Max``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1})"/>
         public TResult Max<TResult>(Expression<Func<TIn, TResult>> selector)
         {
             ReplaceWith = MinOrMax<TResult>(selector.BindParametersAndReturnBody(_current), Expression.LessThan);
-            return default;
+            return default!;
         }
 
         /// <inheritdoc cref="M:System.Linq.Enumerable.Min``1(System.Collections.Generic.IEnumerable{``0})"/>
         public TIn Min()
         {
             ReplaceWith = MinOrMax<TIn>(_current, Expression.GreaterThan);
-            return default;
+            return default!;
         }
 
         /// <inheritdoc cref="M:System.Linq.Enumerable.Min``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1})"/>
         public TResult Min<TResult>(Expression<Func<TIn, TResult>> selector)
         {
             ReplaceWith = MinOrMax<TResult>(selector.BindParametersAndReturnBody(_current), Expression.GreaterThan);
-            return default;
+            return default!;
         }
 
         private Expression MinOrMaxPrimitive<T>(Expression current,
@@ -398,7 +404,7 @@ namespace ExpressionToolkit
             OnFirstElement(Expression.Assign(variable, _current));
             OnNextElements(Expression.Assign(variable, func.BindParametersAndReturnBody(variable, _current)));
             ReplaceWith = variable;
-            return default;
+            return default!;
         }
 
         /// <inheritdoc cref="M:System.Linq.Enumerable.Aggregate``2(System.Collections.Generic.IEnumerable{``0},``1,System.Func{``1,``0,``1})"/>
@@ -408,7 +414,7 @@ namespace ExpressionToolkit
             Preparation(Expression.Assign(variable, seed.Body));
             OnAllElements(Expression.Assign(variable, func.BindParametersAndReturnBody(variable, _current)));
             ReplaceWith = variable;
-            return default;
+            return default!;
         }
 
         public TAccumulate Aggregate<TAccumulate>(Expression<Func<TAccumulate>> seed, Expression<Action<TAccumulate, TIn>> func)
@@ -417,7 +423,7 @@ namespace ExpressionToolkit
             Preparation(Expression.Assign(variable, seed.Body));
             OnAllElements(func.BindParametersAndReturnBody(variable, _current));
             ReplaceWith = variable;
-            return default;
+            return default!;
         }
 
         /// <inheritdoc cref="M:System.Linq.Enumerable.Aggregate``3(System.Collections.Generic.IEnumerable{``0},``1,System.Func{``1,``0,``1},System.Func{``1,``2})"/>
@@ -427,7 +433,7 @@ namespace ExpressionToolkit
             Preparation(Expression.Assign(variable, seed.Body));
             OnAllElements(Expression.Assign(variable, func.BindParametersAndReturnBody(variable, _current)));
             ReplaceWith = resultSelector.BindParametersAndReturnBody(variable);
-            return default;
+            return default!;
         }
 
         public TResult Aggregate<TAccumulate, TResult>(Expression<Func<TAccumulate>> seed, Expression<Action<TAccumulate, TIn>> func, Expression<Func<TAccumulate, TResult>> resultSelector)
@@ -436,7 +442,7 @@ namespace ExpressionToolkit
             Preparation(Expression.Assign(variable, seed.Body));
             OnAllElements( func.BindParametersAndReturnBody(variable, _current));
             ReplaceWith = resultSelector.BindParametersAndReturnBody(variable);
-            return default;
+            return default!;
         }
 
         /// <inheritdoc cref="M:System.Linq.Enumerable.Count``1(System.Collections.Generic.IEnumerable{``0})"/>
@@ -496,7 +502,7 @@ namespace ExpressionToolkit
                     variable,
                     _current));
             ReplaceWith = variable;
-            return default;
+            return default!;
         }
 
         public TIn Sum()
@@ -538,7 +544,7 @@ namespace ExpressionToolkit
             }
 
             ReplaceWith = variable;
-            return default;
+            return default!;
         }
 
         /// <inheritdoc cref="M:System.Linq.Enumerable.ToArray``1(System.Collections.Generic.IEnumerable{``0})"/>

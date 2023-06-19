@@ -3,7 +3,8 @@
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
         <TransformOnBuild>true</TransformOnBuild>
-        <LangVersion>8</LangVersion>
+        <Nullable>enable</Nullable>
+        <LangVersion>10</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>

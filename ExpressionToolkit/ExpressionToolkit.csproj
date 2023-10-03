@@ -34,14 +34,10 @@
       <PackageReference Include="JetBrainsAnnotations.Fody" Version="2.17.0">
           <PrivateAssets>all</PrivateAssets>
       </PackageReference>
-      <PackageReference Include="Mono.TextTemplating.Build" Version="2.3.0-preview-0048-g38de54eb32">
+      <PackageReference Include="T4.BuildTools" Version="3.0.0-preview-0027-g2711105671">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
-      <!--<PackageReference Include="T4.BuildTools" Version="2.4.0-preview-0020-g384e6affbf">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      </PackageReference>-->
     </ItemGroup>
 
 

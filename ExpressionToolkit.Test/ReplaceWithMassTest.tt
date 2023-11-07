@@ -1,0 +1,75 @@
+﻿<#@ template language="C#" debug="false" hostspecific="false" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="System.Linq" #>
+using System;
+using System.Collections.Immutable;
+using System.Linq.Expressions;
+
+namespace ExpressionToolkit.Test;
+
+public class ReplaceWithMassTest
+{
+<#
+    for (var pCount = 0; pCount <= 15; pCount++)
+    {
+#>
+
+#region <#=pCount#>Args
+
+    private class OneClass<#=pCount#>
+    {
+        [ReplaceWith(nameof(InstanceBackingMethod))]
+        public int InstanceBackedMethod(<#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"int p{p}")) #>) => throw new NotImplementedException();
+
+        private Expression InstanceBackingMethod(<#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"Expression p{p}")) #>) => Expression.Constant(<#=pCount#>);
+
+        [ReplaceWith(nameof(StaticBackingMethod))]
+        public int StaticBackedMethod(<#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"int p{p}")) #>) => throw new NotImplementedException();
+
+        private static Expression StaticBackingMethod(<#= string.Join(", ", Enumerable.Range(0, pCount + 1).Select(p => $"Expression p{p}")) #>) => Expression.Constant(<#=pCount#>);
+
+        [ReplaceWith(nameof(StaticOnlyBackingMethod))]
+        public int StaticOnlyBackedMethod(<#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"int p{p}")) #>) => throw new NotImplementedException();
+
+        private static Expression StaticOnlyBackingMethod(<#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"Expression p{p}")) #>) => Expression.Constant(<#=pCount#>);
+    }
+
+    [Fact]
+    public void InstanceBackedMethodWith<#=pCount#>ArgsIsReplaced()
+    {
+        var c = new OneClass<#=pCount#>();
+        Expression<Func<<#= string.Join(", ", Enumerable.Range(0, pCount + 1).Select(p => $"int")) #>>> input = (<#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"p{p}")) #>) => c.InstanceBackedMethod(<#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"p{p}")) #>);
+        var output = new ExpressionReplacingVisitor(ImmutableDictionary<Expression, Expression>.Empty)
+            .Visit(input);
+        output.ShouldBeAssignableTo<Expression<Func<<#= string.Join(", ", Enumerable.Range(0, pCount + 1).Select(p => $"int")) #>>>>()
+            !.Body.ShouldBeOfType<ConstantExpression>()
+            .Value.ShouldBe(<#=pCount#>);
+    }
+
+    [Fact]
+    public void StaticBackedMethodWith<#=pCount#>ArgsIsReplaced()
+    {
+        Expression<Func<OneClass<#=pCount#>, <#= string.Join(", ", Enumerable.Range(0, pCount + 1).Select(p => $"int")) #>>> input = (<#= string.Join(", ", Enumerable.Range(0, pCount + 1).Select(p => $"p{p}")) #>) => p0.StaticBackedMethod(<#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"p{p}")) #>);
+        var output = new ExpressionReplacingVisitor(ImmutableDictionary<Expression, Expression>.Empty)
+            .Visit(input);
+        output.ShouldBeAssignableTo<Expression<Func<OneClass<#=pCount#>, <#= string.Join(", ", Enumerable.Range(0, pCount + 1).Select(p => $"int")) #>>>>()
+            !.Body.ShouldBeOfType<ConstantExpression>()
+            .Value.ShouldBe(<#=pCount#>);
+    }
+
+    [Fact]
+    public void StaticOnlyBackedMethodWith<#=pCount#>ArgsIsReplaced()
+    {
+        Expression<Func<OneClass<#=pCount#>, <#= string.Join(", ", Enumerable.Range(0, pCount + 1).Select(p => $"int")) #>>> input = (<#= string.Join(", ", Enumerable.Range(0, pCount + 1).Select(p => $"p{p}")) #>) => p0.StaticOnlyBackedMethod(<#= string.Join(", ", Enumerable.Range(1, pCount).Select(p => $"p{p}")) #>);
+        var output = new ExpressionReplacingVisitor(ImmutableDictionary<Expression, Expression>.Empty)
+            .Visit(input);
+        output.ShouldBeAssignableTo<Expression<Func<OneClass<#=pCount#>, <#= string.Join(", ", Enumerable.Range(0, pCount + 1).Select(p => $"int")) #>>>>()
+            !.Body.ShouldBeOfType<ConstantExpression>()
+            .Value.ShouldBe(<#=pCount#>);
+    }
+
+#endregion
+<#
+    }
+#>
+}

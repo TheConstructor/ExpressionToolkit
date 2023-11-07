@@ -56,36 +56,50 @@ namespace ExpressionToolkit
                         : (node.Object.TryResolveValue(out var value), value));
                 var type = replaceWith.Container ?? calledMethod.DeclaringType;
 
-                var methods = type.GetMethods(calledMethod.IsStatic
-                        ? BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static
-                        : BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance)
-                    .Where(m => m.Name == replaceWith.MemberName
-                                && m.GetParameters().Length == node.Arguments.Count
-                                && (!m.ContainsGenericParameters
-                                    || m.GetGenericArguments().Length == calledMethod.GetGenericArguments().Length))
-                    .Select(m => m.ContainsGenericParameters
-                        ? m.MakeGenericMethod(calledMethod.GetGenericArguments())
-                        : m)
-                    .Where(m => m.GetParameters()
-                                    .Zip(node.Arguments, (p, a) => (p, a))
-                                    .All(t => t.p.ParameterType.IsInstanceOfType(t.a)
-                                              || t.p.ParameterType.IsAssignableFrom(t.a.Type))
-                                && typeof(Expression).IsAssignableFrom(m.ReturnType));
+                var calledMethodIsStatic = calledMethod.IsStatic;
+                var minArgumentsCount = node.Arguments.Count;
+                var maxArgumentsCount = calledMethodIsStatic
+                    ? minArgumentsCount
+                    : minArgumentsCount + 1; // +1 for non-static -> static
 
                 var nodeArguments = node.Arguments.Select(InputOrReplacement).ToArray();
 
-                foreach (var method in methods)
+                foreach (var m in type.GetMethods(calledMethodIsStatic
+                             ? BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static
+                             : BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance))
                 {
+                    if(!(m.Name == replaceWith.MemberName
+                         && m.GetParameters().Length >= minArgumentsCount
+                         && m.GetParameters().Length <= maxArgumentsCount
+                         && (!m.ContainsGenericParameters
+                             || m.GetGenericArguments().Length == calledMethod.GetGenericArguments().Length)))
+                        continue;
+
+                    var method = m.ContainsGenericParameters
+                        ? m.MakeGenericMethod(calledMethod.GetGenericArguments())
+                        : m;
+
+                    var rawArgs = method.GetParameters().Length == node.Arguments.Count
+                        ? (IReadOnlyList<Expression>) nodeArguments
+                        : nodeArguments.Prepend(node.Object).ToList();
+                    if(!(method.GetParameters()
+                             .Zip(rawArgs,
+                                 (p, a) => (p, a))
+                             .All(t => t.p.ParameterType.IsInstanceOfType(t.a)
+                                       || t.p.ParameterType.IsAssignableFrom(t.a.Type))
+                         && typeof(Expression).IsAssignableFrom(method.ReturnType)))
+                        continue;
+                    
                     var parameters = method.GetParameters();
                     var arguments = new object[parameters.Length];
                     for (var i = 0; i < parameters.Length; i++)
                     {
-                        if (parameters[i].ParameterType.IsInstanceOfType(nodeArguments[i]))
+                        if (parameters[i].ParameterType.IsInstanceOfType(rawArgs[i]))
                         {
-                            arguments[i] = nodeArguments[i];
+                            arguments[i] = rawArgs[i];
                         }
-                        else if (parameters[i].ParameterType.IsAssignableFrom(nodeArguments[i].Type)
-                                 && nodeArguments[i].TryResolveValue(out var argument))
+                        else if (parameters[i].ParameterType.IsAssignableFrom(rawArgs[i].Type)
+                                 && rawArgs[i].TryResolveValue(out var argument))
                         {
                             arguments[i] = argument;
                         }
@@ -100,9 +114,9 @@ namespace ExpressionToolkit
                     {
                         target = null;
                     }
-                    else if (instance.Value is {found: true} instanceValue)
+                    else if (instance.Value is {found: true} instanceValue )
                     {
-                        target = instanceValue;
+                        target = instanceValue.value;
                     }
                     else
                     {

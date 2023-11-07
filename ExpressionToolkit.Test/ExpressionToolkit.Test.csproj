@@ -1,12 +1,24 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
+        <TransformOnBuild>true</TransformOnBuild>
         <ImplicitUsings>disable</ImplicitUsings>
         <Nullable>enable</Nullable>
 
         <IsPackable>false</IsPackable>
     </PropertyGroup>
+
+    <ItemGroup>
+        <T4Transform Include="ReplaceWithMassTest.tt">
+            <LastGenOutput>ReplaceWithMassTest.cs</LastGenOutput>
+        </T4Transform>
+        <Compile Update="ReplaceWithMassTest.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>ReplaceWithMassTest.tt</DependentUpon>
+        </Compile>
+    </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="JetBrains.Annotations" Version="2023.2.0" />
@@ -20,6 +32,10 @@
         <PackageReference Include="coverlet.collector" Version="6.0.0">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="T4.BuildTools" Version="3.0.0-preview-0027-g2711105671">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
     </ItemGroup>
 

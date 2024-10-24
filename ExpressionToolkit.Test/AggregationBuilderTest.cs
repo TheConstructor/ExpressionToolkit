@@ -46,7 +46,7 @@ public class AggregationBuilderTest
     [InlineData(new string[0], null)]
     [InlineData(new string?[] {null}, null)]
     [InlineData(new[] {null, "a", "b"}, "a")]
-    public void StringMinIsDetermined(string[] input, string min)
+    public void StringMinIsDetermined(string[] input, string? min)
     {
         var aggregatorExpression
             = AggregationBuilder.CreateAggregator((AggregationBuilder<string> builder) => builder.Min(o => o));
@@ -92,7 +92,7 @@ public class AggregationBuilderTest
     [InlineData(new[] {"d", "c", "b"}, "d")]
     [InlineData(new string[0], null)]
     [InlineData(new string?[] {null}, null)]
-    public void StringMaxIsDetermined(string[] input, string max)
+    public void StringMaxIsDetermined(string[] input, string? max)
     {
         var aggregatorExpression
             = AggregationBuilder.CreateAggregator((AggregationBuilder<string> builder) => builder.Max(o => o));
